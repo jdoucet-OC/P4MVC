@@ -1,6 +1,6 @@
-from app.models import managedb
-from app.controller import controller
-from app.views import views
+from .models import managedb
+from .controller import controller
+from .views import views
 
 
 class Application:

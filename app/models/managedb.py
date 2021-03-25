@@ -1,15 +1,17 @@
+import os
 from tinydb import TinyDB, Query
-import player
+from .player import Player
 
 
 class PlayerDb:
     """"""
     def __init__(self):
         """"""
-        self.db = TinyDB('../dbjson/players.json')
+        self.db = TinyDB(os.getcwd()+'\\app\\dbjson\\players.json')
         self.query = Query()
         self.playersTable = self.db.table('players')
         self.demoPlayerTable = self.db.table('demoplayers')
+
 
     def return_demo(self):
         """
@@ -22,7 +24,7 @@ class PlayerDb:
             bdate = players['bdate']
             genre = players['genre']
             elo = players['elo']
-            playerlist.append(player.Player(fname, lname, bdate,
+            playerlist.append(Player(fname, lname, bdate,
                                             genre, elo))
         return playerlist
 
@@ -37,7 +39,7 @@ class PlayerDb:
             bdate = players['bdate']
             genre = players['genre']
             elo = players['elo']
-            playerlist.append(player.Player(fname, lname, bdate,
+            playerlist.append(Player(fname, lname, bdate,
                                             genre, elo))
         return playerlist
 
@@ -46,7 +48,7 @@ class TournamentDb:
     """"""
     def __init__(self):
         """"""
-        self.db = TinyDB('../dbjson/tournament.json')
+        self.db = TinyDB(os.getcwd()+'\\app\\dbjson\\tournament.json')
         self.query = Query()
         self.tournament = self.db.table('tournament')
         self.rounds = self.db.table('rounds')

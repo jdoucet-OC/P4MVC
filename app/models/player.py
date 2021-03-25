@@ -1,4 +1,4 @@
-import managedb
+from ..models import managedb
 
 
 class Player:

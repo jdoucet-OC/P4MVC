@@ -1,4 +1,4 @@
-from P4MVC.models import tournaments, round, player
+from ..models import tournaments, round
 
 
 class Controller:
@@ -7,7 +7,6 @@ class Controller:
         """
         :param view:
         """
-        self.tournament = ''
         self.view = view
         self.pgetter = pgetter
         self.tgetter = tgetter
