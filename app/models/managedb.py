@@ -10,8 +10,7 @@ class PlayerDb:
         self.db = TinyDB(os.getcwd()+'\\app\\dbjson\\players.json')
         self.query = Query()
         self.playersTable = self.db.table('players')
-        self.demoPlayerTable = self.db.table('demoplayers')
-
+        self.demoPlayerTable = self.db.table('demo')
 
     def return_demo(self):
         """
@@ -25,7 +24,7 @@ class PlayerDb:
             genre = players['genre']
             elo = players['elo']
             playerlist.append(Player(fname, lname, bdate,
-                                            genre, elo))
+                                     genre, elo))
         return playerlist
 
     def return_players(self):
@@ -40,7 +39,7 @@ class PlayerDb:
             genre = players['genre']
             elo = players['elo']
             playerlist.append(Player(fname, lname, bdate,
-                                            genre, elo))
+                                     genre, elo))
         return playerlist
 
 
@@ -49,10 +48,12 @@ class TournamentDb:
     def __init__(self):
         """"""
         self.db = TinyDB(os.getcwd()+'\\app\\dbjson\\tournament.json')
+        self.pdb = TinyDB(os.getcwd()+'\\app\\dbjson\\players.json')
         self.query = Query()
         self.tournament = self.db.table('tournament')
         self.rounds = self.db.table('rounds')
         self.matches = self.db.table('matches')
+        self.players = self.pdb.table('players')
 
     def get_tournament_id(self, tournament):
         """
@@ -69,7 +70,7 @@ class TournamentDb:
     def return_player_tournament(self, tourid):
         """
         :param tourid:
-        :return:
+        :return: créer un ID de joueur et faire la requette ASAP
         """
         search1 = self.query.tournament == tourid
         search2 = self.query.round == 0
@@ -88,9 +89,8 @@ class TournamentDb:
             name = tournament['name'].capitalize()
             place = tournament['place'].capitalize()
             date = tournament['date']
-            turns = tournament['turns']
             timetype = tournament['timeType']
-            tourlist.append((name, place, date, turns, timetype))
+            tourlist.append((name, place, date, timetype))
         return tourlist
 
     def return_rounds(self, tourid):
