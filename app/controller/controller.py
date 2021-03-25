@@ -64,14 +64,8 @@ class Controller:
         round1 = round.Round('Round1', tour1)
         tournament.tournees.append(round1)
 
-        # insertion du round 1 et du match 1 sans resultat dans la DB
+        # insertion du round 1
         round1.insert_round(tournament, 0)
-        indexm = 0
-        for match in round1.matches:
-            p1 = match[0][0]
-            p2 = match[1][0]
-            round1.init_match(tournament, 0, indexm, p1, p2)
-            indexm += 1
 
         # Préparation du match
         self.view.show_elo_match(round1.matches)
@@ -92,15 +86,9 @@ class Controller:
         nextround = round.Round(fstring, nexttour)
         tournament.tournees.append(nextround)
 
-        # insertion du round et du match sans resultat dans la DB
+        # insertion des rounds suivant
         indexr = roundnumber-1
         nextround.insert_round(tournament, indexr)
-        indexm = 0
-        for match in nextround.matches:
-            p1 = match[0][0]
-            p2 = match[1][0]
-            nextround.init_match(tournament, indexr, indexm, p1, p2)
-            indexm += 1
 
         # Préparation du match
         self.view.show_elo_match(nextround.matches)
@@ -116,8 +104,7 @@ class Controller:
         index = len(tournament.tournees)-1
         theround = tournament.tournees[index]
         theround.enter_scores(results)
-        # insertion des resultats du match dans la DB
-        theround.enter_score(tournament)
+        theround.insert_matches(tournament, index)
         if tournament.turns == len(tournament.tournees):
             self.view.show_results(theround.matches)
             # scoreboard à ajouter
@@ -176,25 +163,29 @@ class Controller:
 
     def all_player_alpha_sort(self):
         """
-        :return:
+        :return:sends a list of all players to the view, sorted
+        alphebetically
         """
         all_players = self.pgetter.return_players()
         all_players.sort(key=lambda x: x.lastName)
-        self.view.show_pname(all_players)
+        self.view.all_player_alpha_view(all_players, 0)
 
     def all_players_elo_sort(self):
         """
-        :return:
+        :return: sends a list of all players to the view, sorted
+        by elo
         """
         all_players = self.pgetter.return_players()
         all_players.sort(key=lambda x: x.elo, reverse=True)
-        self.view.show_pname(all_players)
+        self.view.all_player_elo_view(all_players, 1)
 
     def tournament_alpha_sort(self):
         """
         :return:
         """
-        plist = self.tgetter.return_player_tournament(0)
+        tlist = self.tgetter.return_tournaments()
+        tourid = self.view.tournament_choice_picker(tlist)
+        plist = self.tgetter.return_player_tournament(tourid)
         for item in plist:
             print(item)
 
@@ -202,7 +193,9 @@ class Controller:
         """
         :return:
         """
-        plist = self.tgetter.return_player_tournament(0)
+        tlist = self.tgetter.return_tournaments()
+        tourid = self.view.tournament_choice_picker(tlist)
+        plist = self.tgetter.return_player_tournament(tourid)
         for item in plist:
             print(item)
 
@@ -210,6 +203,7 @@ class Controller:
         """
         :return:
         """
+
         plist = self.tgetter.return_tournaments()
         for item in plist:
             print(item)
@@ -218,7 +212,9 @@ class Controller:
         """
         :return:
         """
-        rlist = self.tgetter.return_rounds(0)
+        tlist = self.tgetter.return_tournaments()
+        tourid = self.view.tournament_choice_picker(tlist)
+        rlist = self.tgetter.return_rounds(tourid)
         for item in rlist:
             print(item)
 
@@ -226,7 +222,9 @@ class Controller:
         """
         :return:
         """
-        mlist = self.tgetter.return_all_matches(0)
+        tlist = self.tgetter.return_tournaments()
+        tourid = self.view.tournament_choice_picker(tlist)
+        mlist = self.tgetter.return_all_matches(tourid)
         for item in mlist:
             print(item)
 

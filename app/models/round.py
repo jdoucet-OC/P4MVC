@@ -1,5 +1,5 @@
 from datetime import datetime
-import managedb
+from ..models import managedb
 
 
 class Round:
@@ -49,16 +49,22 @@ class Round:
         if not search1:
             self.rdb.rounds.insert(ser_round)
 
-    def init_match(self, tournament, indexr, indexm, p1, p2):
-
-        thetournament = self.rdb.get_tournament_id(tournament)
-        ser_match = {
-            'id': indexm,
-            'round': indexr,
-            'tournament': thetournament,
-            'player1': p1.firstName,
-            'result1': 'TBD',
-            'player2': p2.firstName,
-            'result2:': 'TBD'
-        }
-        self.rdb.matches.insert(ser_match)
+    def insert_matches(self, tournament, indexr):
+        jj = 0
+        for match in self.matches:
+            p1 = match[0][0]
+            p2 = match[1][0]
+            r1 = match[0][1]
+            r2 = match[1][1]
+            thetournament = self.rdb.get_tournament_id(tournament)
+            ser_match = {
+                'id': jj,
+                'round': indexr,
+                'tournament': thetournament,
+                'player1': p1.firstName,
+                'result1': r1,
+                'player2': p2.firstName,
+                'result2:': r2
+            }
+            self.rdb.matches.insert(ser_match)
+            jj += 1

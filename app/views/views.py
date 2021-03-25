@@ -175,3 +175,39 @@ class Views:
             '[G] List all matches in one tournament\n'
         ).lower()
         return choice
+
+    @staticmethod
+    def all_player_view(all_players, mode):
+        """
+        :param all_players: list of players
+        :param mode: either alphabetical, or elo
+        :return: view of all players
+        """
+        ii = 1
+        mode_list = ["sorted alphebetically :"
+                     "sorted by Elo :"]
+        fstring = f"\n\nHere's the list of all players {mode_list[mode]} :\n"
+        print(fstring)
+        for player in all_players:
+            lname = player.lastName
+            fname = player.firstName
+            elo = player.elo
+            fstring = f"Player {ii} : {fname} {lname} - Elo = {elo}"
+            print(fstring)
+            ii += 1
+        input("\nPress any key to return to report menu..\n")
+
+    @staticmethod
+    def tournament_choice_picker(tournaments):
+        print("\n Chose one tournament :")
+        ii = 0
+        for tournament in tournaments:
+            name = tournament[0]
+            place = tournament[1]
+            date = tournament[2]
+            timetype = tournament[3]
+            fstring = f"[{ii}] : {place} {date} - {name} - {timetype}"
+            print(fstring)
+        strtourid = input()
+        inttourid = int(strtourid)
+        return inttourid
