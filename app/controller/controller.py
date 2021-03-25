@@ -185,9 +185,10 @@ class Controller:
         """
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
-        plist = self.tgetter.return_player_tournament(tourid)
-        for item in plist:
-            print(item)
+        pidlist = self.tgetter.return_player_tournament(tourid)
+        for pid in pidlist:
+            playerrr = self.pgetter.search_player_by_id(pid)
+            print(playerrr)
 
     def tournament_elo_sort(self):
         """
@@ -195,9 +196,10 @@ class Controller:
         """
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
-        plist = self.tgetter.return_player_tournament(tourid)
-        for item in plist:
-            print(item)
+        pidlist = self.tgetter.return_player_tournament(tourid)
+        for pid in pidlist:
+            playerrr = self.pgetter.search_player_by_id(pid)
+            print(playerrr)
 
     def all_tournaments(self):
         """

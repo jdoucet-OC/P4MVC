@@ -14,7 +14,7 @@ class PlayerDb:
 
     def return_demo(self):
         """
-        :return:
+        :return: return list of demo players
         """
         playerlist = []
         for players in self.demoPlayerTable.all():
@@ -29,7 +29,7 @@ class PlayerDb:
 
     def return_players(self):
         """
-        :return:
+        :return: return list of all players in player table
         """
         playerlist = []
         for players in self.playersTable.all():
@@ -42,18 +42,21 @@ class PlayerDb:
                                      genre, elo))
         return playerlist
 
+    def search_player_by_id(self, pid):
+        cond1 = self.query.id == pid
+        search1 = self.playersTable.search(cond1)
+        return search1
+
 
 class TournamentDb:
     """"""
     def __init__(self):
         """"""
         self.db = TinyDB(os.getcwd()+'\\app\\dbjson\\tournament.json')
-        self.pdb = TinyDB(os.getcwd()+'\\app\\dbjson\\players.json')
         self.query = Query()
         self.tournament = self.db.table('tournament')
         self.rounds = self.db.table('rounds')
         self.matches = self.db.table('matches')
-        self.players = self.pdb.table('players')
 
     def get_tournament_id(self, tournament):
         """
