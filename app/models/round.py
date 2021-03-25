@@ -61,9 +61,9 @@ class Round:
                 'id': jj,
                 'round': indexr,
                 'tournament': thetournament,
-                'player1': p1.firstName,
+                'player1': p1.get_player_id(),
                 'result1': r1,
-                'player2': p2.firstName,
+                'player2': p2.get_player_id(),
                 'result2:': r2
             }
             self.rdb.matches.insert(ser_match)

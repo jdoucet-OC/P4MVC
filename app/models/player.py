@@ -18,7 +18,9 @@ class Player:
         """
         :return:
         """
+        index = self.db.playersTable.__len__()
         ser_p1 = {
+            'id': index,
             'lname': self.lastName.lower(),
             'fname': self.firstName.lower(),
             'bdate': self.bDay,
@@ -40,4 +42,15 @@ class Player:
         cond2 = (self.db.query.fname == self.firstName.lower())
         cond3 = (self.db.query.bdate == self.bDay)
         self.db.playersTable.update({'elo': elo}, cond1 & cond2 & cond3)
+
+    def get_player_id(self):
+        """
+        :return: player ID
+        """
+        cond1 = (self.db.query.lname == self.lastName.lower())
+        cond2 = (self.db.query.fname == self.firstName.lower())
+        cond3 = (self.db.query.bdate == self.bDay)
+
+        search1 = self.db.playersTable.search(cond1 & cond2 & cond3)
+        return search1[0]['id']
 
