@@ -184,7 +184,7 @@ class Views:
         :return: view of all players
         """
         ii = 1
-        mode_list = ["sorted alphebetically :"
+        mode_list = ["sorted alphebetically :",
                      "sorted by Elo :"]
         fstring = f"\n\nHere's the list of all players {mode_list[mode]} :\n"
         print(fstring)
@@ -199,7 +199,7 @@ class Views:
 
     @staticmethod
     def tournament_choice_picker(tournaments):
-        print("\n Chose one tournament :")
+        print("\n Pick one tournament :")
         ii = 0
         for tournament in tournaments:
             name = tournament[0]
@@ -208,6 +208,46 @@ class Views:
             timetype = tournament[3]
             fstring = f"[{ii}] : {place} {date} - {name} - {timetype}"
             print(fstring)
+            ii += 1
         strtourid = input()
         inttourid = int(strtourid)
         return inttourid
+
+    @staticmethod
+    def player_choice_picker(playerlist):
+        inputs = []
+        while len(inputs) < 8:
+            for player in playerlist:
+                try:
+                    lname = player.lastName
+                    fname = player.firstName
+                    elo = player.elo
+                    pid = player.get_player_id()
+                    fstring = f"[{pid}] : {fname} {lname} - Elo = {elo}"
+                    print(fstring)
+                except AttributeError:
+                    print(player)
+            picker = input()
+            inputs.append(int(picker))
+            playerlist[int(picker)] = f"[{int(picker)}] : Already Chosen"
+        return inputs
+
+    @staticmethod
+    def list_all_tournaments(tournaments):
+        print("\nHere's the list of all tournaments :")
+        for tournament in tournaments:
+            name = tournament[0]
+            place = tournament[1]
+            date = tournament[2]
+            timetype = tournament[3]
+            fstring = f"{place} {date} - {name} - {timetype}"
+            print(fstring)
+        input("\nPress any key to return to report menu..\n")
+
+    @staticmethod
+    def list_all_rounds(tournament):
+        pass
+
+    @staticmethod
+    def list_all_matches(tournament):
+        pass

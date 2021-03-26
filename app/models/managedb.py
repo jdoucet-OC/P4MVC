@@ -42,10 +42,16 @@ class PlayerDb:
                                      genre, elo))
         return playerlist
 
-    def search_player_by_id(self, pid):
+    def get_player_by_id(self, pid):
         cond1 = self.query.id == pid
-        search1 = self.playersTable.search(cond1)
-        return search1
+        search1 = self.playersTable.search(cond1)[0]
+        lname = search1['lname'].capitalize()
+        fname = search1['fname'].capitalize()
+        bdate = search1['bdate']
+        genre = search1['genre']
+        elo = search1['elo']
+        playerbyid = Player(fname, lname, bdate, genre, elo)
+        return playerbyid
 
 
 class TournamentDb:
@@ -77,11 +83,11 @@ class TournamentDb:
         """
         search1 = self.query.tournament == tourid
         search2 = self.query.round == 0
-        playerlist = []
+        pidlist = []
         for item in self.matches.search(search1 & search2):
-            playerlist.append(item['player1'])
-            playerlist.append(item['player2'])
-        return playerlist
+            pidlist.append(item['player1'])
+            pidlist.append(item['player2'])
+        return pidlist
 
     def return_tournaments(self):
         """
