@@ -122,7 +122,15 @@ class Controller:
         self.run()
 
     def pick_players(self, tournament):
-        pass
+        choicelist = self.pgetter.return_players()
+        pidlist = self.view.player_choice_picker(choicelist)
+        playerlist = []
+        for pid in pidlist:
+            playerlist.append(self.pgetter.get_player_by_id(pid))
+        tournament.players = playerlist
+        tournament.players = tournament.sort_by_elo()
+        self.view.show_pname(tournament.players)
+        self.first_round(tournament)
 
     def resume_tt(self):
         pass
@@ -137,8 +145,7 @@ class Controller:
             self.run()
         playerind = (players[int(index)-1])
         new_elo = self.view.edit_elo(playerind)
-        playerind.modify_elo(new_elo)
-        print(new_elo)
+        playerind.modify_elo(int(new_elo))
         self.edit_players()
 
     def start_reports(self):
@@ -168,7 +175,8 @@ class Controller:
         """
         all_players = self.pgetter.return_players()
         all_players.sort(key=lambda x: x.lastName)
-        self.view.all_player_alpha_view(all_players, 0)
+        self.view.all_player_view(all_players, 0)
+        self.start_reports()
 
     def all_players_elo_sort(self):
         """
@@ -177,7 +185,8 @@ class Controller:
         """
         all_players = self.pgetter.return_players()
         all_players.sort(key=lambda x: x.elo, reverse=True)
-        self.view.all_player_elo_view(all_players, 1)
+        self.view.all_player_view(all_players, 1)
+        self.start_reports()
 
     def tournament_alpha_sort(self):
         """
@@ -186,9 +195,12 @@ class Controller:
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
         pidlist = self.tgetter.return_player_tournament(tourid)
+        playerlist = []
         for pid in pidlist:
-            playerrr = self.pgetter.search_player_by_id(pid)
-            print(playerrr)
+            playerlist.append(self.pgetter.get_player_by_id(pid))
+        playerlist.sort(key=lambda x: x.lastName)
+        self.view.all_player_view(playerlist, 0)
+        self.start_reports()
 
     def tournament_elo_sort(self):
         """
@@ -197,18 +209,21 @@ class Controller:
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
         pidlist = self.tgetter.return_player_tournament(tourid)
+        playerlist = []
         for pid in pidlist:
-            playerrr = self.pgetter.search_player_by_id(pid)
-            print(playerrr)
+            playerlist.append(self.pgetter.get_player_by_id(pid))
+        playerlist.sort(key=lambda x: x.elo, reverse=True)
+        self.view.all_player_view(playerlist, 1)
+        self.start_reports()
 
     def all_tournaments(self):
         """
         :return:
         """
 
-        plist = self.tgetter.return_tournaments()
-        for item in plist:
-            print(item)
+        tlist = self.tgetter.return_tournaments()
+        self.view.list_all_tournaments(tlist)
+        self.start_reports()
 
     def list_all_rounds(self):
         """
@@ -219,6 +234,7 @@ class Controller:
         rlist = self.tgetter.return_rounds(tourid)
         for item in rlist:
             print(item)
+        self.start_reports()
 
     def list_all_matches(self):
         """
@@ -229,6 +245,7 @@ class Controller:
         mlist = self.tgetter.return_all_matches(tourid)
         for item in mlist:
             print(item)
+        self.start_reports()
 
     def resumt_tt(self):
         pass
