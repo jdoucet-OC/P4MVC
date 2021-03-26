@@ -126,3 +126,18 @@ class TournamentDb:
         for item in self.matches.search(search1):
             matchlist.append(item)
         return matchlist
+
+    def return_unfinished_tournaments(self):
+        tourids = []
+        for tournament in self.tournament.all():
+            tourids.append(tournament['id'])
+        for tourid in tourids:
+            search1 = self.query.tournament == tourid
+            matchlist = []
+            for item in self.matches.search(search1):
+                matchlist.append(item)
+            if len(matchlist) < 16:
+                print('oui')
+            else:
+                print('non')
+

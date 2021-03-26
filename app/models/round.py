@@ -6,8 +6,8 @@ class Round:
     """"""
     def __init__(self, name, matcheslist):
         """
-        :param name:
-        :param matcheslist:
+        :param name: round name
+        :param matcheslist: matches in the round
         """
         self.name = name
         self.matches = matcheslist
@@ -17,8 +17,8 @@ class Round:
 
     def enter_scores(self, results):
         """
-        :param results:
-        :return:
+        :param results: results to enter in match
+        :return: matches, with results, with end time
         """
         ii = 0
         for result in results:
@@ -35,7 +35,11 @@ class Round:
         self.endTime = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
     def insert_round(self, tournament, index):
-        """"""
+        """
+        :param tournament: which tournament the round is played in
+        :param index: which round it is
+        :return: inserts round in db
+        """
         theround = tournament.tournees[index]
         thetournament = self.rdb.get_tournament_id(tournament)
         ser_round = {
@@ -50,6 +54,11 @@ class Round:
             self.rdb.rounds.insert(ser_round)
 
     def insert_matches(self, tournament, indexr):
+        """
+        :param tournament: which tournament the match is played in
+        :param indexr: which round the match is played in
+        :return: inserts match in db
+        """
         jj = 0
         for match in self.matches:
             p1 = match[0][0]

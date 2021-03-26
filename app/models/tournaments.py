@@ -5,6 +5,13 @@ class Tournament:
     """"""
     def __init__(self, name, place, date,
                  timetype, desc):
+        """
+        :param name: tournament name
+        :param place: tournament location
+        :param date: tournament date (dd/mm/yyyy)
+        :param timetype: tournament chess time type
+        :param desc: tournament description
+        """
         self.name = name
         self.place = place
         self.date = date
@@ -17,7 +24,7 @@ class Tournament:
 
     def insert_tournament(self):
         """
-        :return:
+        :return: insert tournament in DB
         """
         index = self.tdb.tournament.__len__()
         ser_tournament = {
@@ -42,7 +49,7 @@ class Tournament:
 
     def sort_by_score(self):
         """
-        :return:
+        :return:sorts players in tournament instance by score
         """
         scoreboard = []
         for player in self.players:
@@ -60,7 +67,7 @@ class Tournament:
 
     def sort_by_elo(self):
         """
-        :return:
+        :return: sorts players in tournament instance by score
         """
         sortedlist = sorted(self.players, key=lambda elosort: elosort.elo)
         return sortedlist

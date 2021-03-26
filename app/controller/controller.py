@@ -5,7 +5,10 @@ class Controller:
     """"""
     def __init__(self, view, pgetter, tgetter):
         """
-        :param view:
+        :param view: View object, allowing for controller
+         to display views
+        :param pgetter: player DB manager object from model
+        :param tgetter: tournament DB manager object from model
         """
         self.view = view
         self.pgetter = pgetter
@@ -13,13 +16,13 @@ class Controller:
 
     def run(self):
         """
-        :return:
+        :return: main menu views
         """
         choice = self.view.menu()
         if choice == "a":
             self.new_tt()
         if choice == "b":
-            self.resumt_tt()
+            self.resume_tt()
         if choice == "c":
             self.edit_players()
         if choice == "d":
@@ -29,7 +32,8 @@ class Controller:
 
     def new_tt(self):
         """
-        :return:
+        :return: creates a new tournament, from demo players, or
+        sends user to player picker view
         """
         name, place, date, timetype, desc = self.view.new_tournament()
         tournament = tournaments.Tournament(name, place, date, timetype, desc)
@@ -42,8 +46,8 @@ class Controller:
 
     def demo_players(self, tournament):
         """
-        :param tournament:
-        :return:
+        :param tournament: the currently played tournament instance
+        :return: starts first round with demo players
         """
         tournament.players = self.pgetter.return_demo()
         tournament.players = tournament.sort_by_elo()
@@ -52,8 +56,8 @@ class Controller:
 
     def first_round(self, tournament):
         """
-        :param tournament:
-        :return:
+        :param tournament: the currently played tournament instance
+        :return: plays first round, and manages scores
         """
         middle = len(tournament.players) // 2
         lowerhalf = tournament.players[:middle]
@@ -74,8 +78,9 @@ class Controller:
 
     def next_rounds(self, tournament):
         """
-        :param tournament:
-        :return:
+        :param tournament: the currently played tournament instance
+        :return: plays the "next round" until round limit is
+        reached
         """
         roundnumber = len(tournament.tournees)+1
         fstring = f"Round{roundnumber}"
@@ -97,9 +102,10 @@ class Controller:
 
     def process_results(self, tournament, results):
         """
-        :param tournament:
-        :param results:
-        :return:
+        :param tournament: the currently played tournament instance
+        :param results: results from the last played match
+        :return: starts next round, or ends tournament if
+        tournament round limit is reached
         """
         index = len(tournament.tournees)-1
         theround = tournament.tournees[index]
@@ -116,12 +122,16 @@ class Controller:
 
     def end_tournament(self):
         """
-        :return:
+        :return: ends tournament and returns to main menu
         """
         self.view.tournament_end_view()
         self.run()
 
     def pick_players(self, tournament):
+        """
+        :param tournament: the currently played tournament instance
+        :return: user picks 8 players ID, and plays first round
+        """
         choicelist = self.pgetter.return_players()
         pidlist = self.view.player_choice_picker(choicelist)
         playerlist = []
@@ -132,12 +142,9 @@ class Controller:
         self.view.show_pname(tournament.players)
         self.first_round(tournament)
 
-    def resume_tt(self):
-        pass
-
     def edit_players(self):
         """
-        :return:
+        :return: player elo edit, until "a" key press
         """
         players = self.pgetter.return_players()
         index = self.view.show_players_edit(players)
@@ -150,7 +157,7 @@ class Controller:
 
     def start_reports(self):
         """
-        :return:
+        :return: reports menu choice picker
         """
         choice = self.view.reports_menu()
         choice_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
@@ -190,7 +197,8 @@ class Controller:
 
     def tournament_alpha_sort(self):
         """
-        :return:
+        :return: sends a list of all players in one tournament,
+        sorted alphabetically
         """
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
@@ -204,7 +212,8 @@ class Controller:
 
     def tournament_elo_sort(self):
         """
-        :return:
+        :return: sends a list of all players in one tournament,
+        sorted by elo
         """
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
@@ -218,16 +227,15 @@ class Controller:
 
     def all_tournaments(self):
         """
-        :return:
+        :return: all tournaments
         """
-
         tlist = self.tgetter.return_tournaments()
         self.view.list_all_tournaments(tlist)
         self.start_reports()
 
     def list_all_rounds(self):
         """
-        :return:
+        :return: all rounds from one tournament
         """
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
@@ -238,7 +246,7 @@ class Controller:
 
     def list_all_matches(self):
         """
-        :return:
+        :return: all matches from one tournament
         """
         tlist = self.tgetter.return_tournaments()
         tourid = self.view.tournament_choice_picker(tlist)
@@ -247,5 +255,8 @@ class Controller:
             print(item)
         self.start_reports()
 
-    def resumt_tt(self):
-        pass
+    def resume_tt(self):
+        """
+        :return: resumes picked unfinished tournament
+        """
+        self.tgetter.return_unfinished_tournaments()

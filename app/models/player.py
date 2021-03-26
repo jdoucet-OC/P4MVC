@@ -3,9 +3,14 @@ from ..models import managedb
 
 class Player:
     """"""
-
     def __init__(self, fname, lname, bday, genre, elo):
-        """"""
+        """
+        :param fname: player first name
+        :param lname: player last name
+        :param bday: player birth date
+        :param genre: player genre
+        :param elo: player elo score
+        """
         self.firstName = fname
         self.lastName = lname
         self.bDay = bday
@@ -16,7 +21,7 @@ class Player:
 
     def insert_player(self):
         """
-        :return:
+        :return: inserts players in DB, with ID
         """
         index = self.db.playersTable.__len__()
         ser_p1 = {
@@ -37,7 +42,10 @@ class Player:
             self.db.playersTable.insert(ser_p1)
 
     def modify_elo(self, elo):
-        """"""
+        """
+        :param elo: new elo
+        :return: updates DB with new player elo
+        """
         cond1 = (self.db.query.lname == self.lastName.lower())
         cond2 = (self.db.query.fname == self.firstName.lower())
         cond3 = (self.db.query.bdate == self.bDay)
