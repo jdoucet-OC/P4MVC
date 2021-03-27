@@ -61,4 +61,3 @@ class Player:
 
         search1 = self.db.playersTable.search(cond1 & cond2 & cond3)
         return search1[0]['id']
-
