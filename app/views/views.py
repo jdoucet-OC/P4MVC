@@ -7,7 +7,7 @@ class Views:
     @staticmethod
     def menu():
         """
-        :return:
+        :return: input for choice menu
         """
         print('Chess Tournament Menu :\n')
         choice = input('A: New Tournament\n'
@@ -20,7 +20,7 @@ class Views:
     @staticmethod
     def new_tournament():
         """
-        :return:
+        :return: inputs for tournament attributes
         """
         print("\n\nNew tournament, enter tournament attributes")
         tname = input("Tournament name : ")
@@ -33,7 +33,7 @@ class Views:
     @staticmethod
     def add_players():
         """
-        :return:
+        :return: input of player type for tournament
         """
         print("\n\nAdd players")
         players = input("A: Add 8 Pre-selected Player ( demo )\n"
@@ -43,8 +43,8 @@ class Views:
     @staticmethod
     def show_pname(players):
         """
-        :param players:
-        :return:
+        :param players: player object
+        :return: list of player names
         """
         ii = 1
         print("\n\nToday's players are :\n")
@@ -60,8 +60,8 @@ class Views:
     @staticmethod
     def show_elo_match(matches):
         """
-        :param matches:
-        :return:
+        :param matches: list of matches, unformatted
+        :return: list of matches to be played, formatted
         """
         for match in matches:
             player1 = match[0][0].lastName
@@ -78,8 +78,8 @@ class Views:
     @staticmethod
     def enter_results(matches):
         """
-        :param matches:
-        :return:
+        :param matches: matches just played
+        :return: input of results to enter
         """
         results = []
         for match in matches:
@@ -93,8 +93,8 @@ class Views:
     @staticmethod
     def show_results(matches):
         """
-        :param matches:
-        :return:
+        :param matches: matches just played, with results
+        :return: list of matches, with results
         """
         ii = 1
         for match in matches:
@@ -109,28 +109,31 @@ class Views:
 
     @staticmethod
     def go_next_round():
-        """"""
+        """
+        :return: input to go next round
+        """
         input("Press any key to start next Round...\n")
 
     @staticmethod
     def tournament_end_view():
-        """"""
+        """
+        :return: input to return to main menu
+        """
         print("This is the end!")
         input("Press any Key to go to main menu...")
 
     @staticmethod
     def resume_tournament():
         """
-        :return:
+        :return: resume tournament loading
         """
         print("Resuming previous tournament...")
-        pass
 
     @staticmethod
     def show_players_edit(players):
         """
-        :param players:
-        :return:
+        :param players: players object
+        :return: list of players, to choose from
         """
         ii = 1
         print("\n\nPick which player you want to edit :\n")
@@ -147,8 +150,8 @@ class Views:
     @staticmethod
     def edit_elo(player):
         """
-        :param player:
-        :return:
+        :param player: player to edit elo from
+        :return: input of new elo for player
         """
         lname = player.lastName
         fname = player.firstName
@@ -161,7 +164,7 @@ class Views:
     @staticmethod
     def reports_menu():
         """
-        :return:
+        :return: input of menu to go to
         """
         choice = input(
             'List all players :\n'
@@ -199,6 +202,10 @@ class Views:
 
     @staticmethod
     def tournament_choice_picker(tournaments):
+        """
+        :param tournaments: list of tournaments attributes
+        :return: input of chosen tournament id
+        """
         print("\n Pick one tournament :")
         ii = 0
         for tournament in tournaments:
@@ -215,6 +222,10 @@ class Views:
 
     @staticmethod
     def player_choice_picker(playerlist):
+        """
+        :param playerlist: list of players
+        :return: input of chosen player ID's ( 8 )
+        """
         inputs = []
         while len(inputs) < 8:
             for player in playerlist:
@@ -234,6 +245,10 @@ class Views:
 
     @staticmethod
     def list_all_tournaments(tournaments):
+        """
+        :param tournaments: all tournaments
+        :return: all tournaments, formatted
+        """
         print("\nHere's the list of all tournaments :")
         for tournament in tournaments:
             name = tournament[0]

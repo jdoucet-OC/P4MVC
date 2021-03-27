@@ -61,7 +61,8 @@ class Tournament:
                     if player in match[1]:
                         pscore[1] += match[1][1]
             scoreboard.append(pscore)
-        sortedscoreboard = sorted(scoreboard, key=lambda score: score[1], reverse=True)
+        sortedscoreboard = sorted(scoreboard,
+                                  key=lambda score: score[1], reverse=True)
 
         return sortedscoreboard
 

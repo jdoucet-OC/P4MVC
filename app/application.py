@@ -9,7 +9,8 @@ class Application:
         self.view = views.Views()
         self.pgetter = managedb.PlayerDb()
         self.tgetter = managedb.TournamentDb()
-        self.ctrler = controller.Controller(self.view, self.pgetter, self.tgetter)
+        self.ctrler = controller.Controller(self.view,
+                                            self.pgetter, self.tgetter)
 
     def run(self):
         self.ctrler.run()

@@ -43,6 +43,10 @@ class PlayerDb:
         return playerlist
 
     def get_player_by_id(self, pid):
+        """
+        :param pid: player ID
+        :return: player objects, based on pid search
+        """
         cond1 = self.query.id == pid
         search1 = self.playersTable.search(cond1)[0]
         lname = search1['lname'].capitalize()
@@ -66,8 +70,9 @@ class TournamentDb:
 
     def get_tournament_id(self, tournament):
         """
-        :param tournament:
-        :return:
+        :param tournament: tournament object
+        :return: returns ID corresponding to tournament
+        object search ( name, place, date )
         """
         cond1 = self.query.name == tournament.name.lower()
         cond2 = self.query.place == tournament.place.lower()
@@ -78,8 +83,9 @@ class TournamentDb:
 
     def return_player_tournament(self, tourid):
         """
-        :param tourid:
-        :return: créer un ID de joueur et faire la requette ASAP
+        :param tourid: tournament ID
+        :return: returns playerIDs corresponding to
+        tour ID
         """
         search1 = self.query.tournament == tourid
         search2 = self.query.round == 0
@@ -91,7 +97,7 @@ class TournamentDb:
 
     def return_tournaments(self):
         """
-        :return:
+        :return: all tournaments
         """
         tourlist = []
         for tournament in self.tournament.all():
@@ -104,8 +110,8 @@ class TournamentDb:
 
     def return_rounds(self, tourid):
         """
-        :param tourid:
-        :return:
+        :param tourid: tournament ID
+        :return: rounds corresponding to the tourid
         """
         search1 = self.query.tournament == tourid
         roundlist = []
@@ -118,8 +124,8 @@ class TournamentDb:
 
     def return_all_matches(self, tourid):
         """
-        :param tourid:
-        :return:
+        :param tourid: tournament ID
+        :return: matches corresponding to the tourid
         """
         search1 = self.query.tournament == tourid
         matchlist = []
@@ -128,7 +134,11 @@ class TournamentDb:
         return matchlist
 
     def return_unfinished_tournaments(self):
+        """
+        :return: tournament ID of tournament with less than 16 matches
+        """
         tourids = []
+        unfinished_tour = []
         for tournament in self.tournament.all():
             tourids.append(tournament['id'])
         for tourid in tourids:
@@ -137,7 +147,5 @@ class TournamentDb:
             for item in self.matches.search(search1):
                 matchlist.append(item)
             if len(matchlist) < 16:
-                print('oui')
-            else:
-                print('non')
-
+                unfinished_tour.append(tourid)
+            return tourid
