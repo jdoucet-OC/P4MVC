@@ -1,6 +1,5 @@
 # P4MVC
 
-
 ## Introduction
 
 This python project is a swiss-system chess tournament manager.  
@@ -22,3 +21,6 @@ linux / mac : `source env/bin/activate`
 `pip install -r requirements.txt`  
 5.Run the launcher using :  
 `python main.py`  
+
+## Example
+There should be examples here with screenshots for each program parts  
