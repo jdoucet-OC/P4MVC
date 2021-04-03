@@ -13,11 +13,11 @@ class Views:
         choice = None
         while choice not in choicelist:
             print('Chess Tournament Menu :\n')
-            choice = input('A: New Tournament\n'
-                           'B: Resume Tournament\n'
-                           'C: Edit Players\n'
-                           'D: Reports\n'
-                           'Q: Quit\n').lower()
+            choice = input('[A] New Tournament\n'
+                           '[B] Resume Tournament\n'
+                           '[C] Edit Players\n'
+                           '[D] Reports\n'
+                           '[Q] Quit\n').lower()
         return choice
 
     @staticmethod
@@ -28,8 +28,28 @@ class Views:
         print("\n\nNew tournament, enter tournament attributes")
         tname = input("Tournament name : ")
         tplace = input("City : ")
-        tdate = input("Date : ")
-        timetype = input("TimeType : ")
+        print("Date ( format : dd/mm/yyyy ) -")
+
+        jdate = -2
+        while jdate > 31 or jdate <= 0:
+            jdate = int(input("Day : "))
+        mdate = -2
+        while mdate > 12 or mdate <= 0:
+            mdate = int(input("Month : "))
+        ydate = -2
+        while ydate > 2500 or ydate <= 0:
+            ydate = int(input("Year : "))
+        if mdate < 10:
+            mdate = f"0{mdate}"
+        tdate = "/".join([str(jdate), str(mdate), str(ydate)])
+
+        to_list = ['Bullet', 'Blitz', 'Coup Rapide']
+        choice_list = ['1', '2', '3']
+        choice = None
+        while choice not in choice_list:
+            choice = input("TimeType :\n[1] Bullet\n[2] Blitz\n"
+                           "[3] Coup Rapide")
+        timetype = to_list[int(choice)-1]
         desc = input("Description : ")
         return tname, tplace, tdate, timetype, desc
 
@@ -88,15 +108,17 @@ class Views:
         :return: input of results to enter
         """
         results = []
-
+        choice = None
+        choicelist = ['a', 'b', 'c']
         for match in matches:
-            player1 = match[0][0].lastName
-            player2 = match[1][0].lastName
-
-            fstring = f"Winner : {player1} [A] or [B] {player2}" \
-                      f"\nDraw : [C]\n"
-            choice = input(fstring).lower()
+            while choice not in choicelist:
+                player1 = match[0][0].lastName
+                player2 = match[1][0].lastName
+                fstring = f"Winner : {player1} [A] or [B] {player2}" \
+                          f"\nDraw : [C]\n"
+                choice = input(fstring).lower()
             results.append(choice)
+            choice = None
         return results
 
     @staticmethod
@@ -190,29 +212,34 @@ class Views:
         lname = player.lastName
         fname = player.firstName
         elo = player.elo
-        fstring = f"{fname} {lname} - Elo = {elo}" \
-                  f"\nChoose new elo : "
-        elo = int(input(fstring))
-        return elo
+        new_elo = -1
+        while new_elo < 0 or new_elo > 3500:
+            fstring = f"{fname} {lname} - Elo = {elo}" \
+                      f"\nChoose new elo : "
+            new_elo = int(input(fstring))
+        return new_elo
 
     @staticmethod
     def reports_menu():
         """
         :return: input of menu to go to
         """
-
-        choice = input(
-            'List all players :\n'
-            '  [A] : Alphabetical sort\n'
-            '  [B] : Elo sort\n\n'
-            'List all players in one tournament :\n'
-            '  [C] : Alphabetical sort\n'
-            '  [D] : Elo sort\n\n'
-            '[E] List all tournaments\n'
-            '[F] List all rounds in one tournament\n'
-            '[G] List all matches in one tournament\n'
-            '[M] Return to main menu\n'
-        ).lower()
+        choicelist = ['a', 'b', 'c', 'd',
+                      'e', 'f', 'g', 'm']
+        choice = None
+        while choice not in choicelist:
+            choice = input(
+                'List all players :\n'
+                '  [A] : Alphabetical sort\n'
+                '  [B] : Elo sort\n\n'
+                'List all players in one tournament :\n'
+                '  [C] : Alphabetical sort\n'
+                '  [D] : Elo sort\n\n'
+                '[E] List all tournaments\n'
+                '[F] List all rounds in one tournament\n'
+                '[G] List all matches in one tournament\n'
+                '[M] Return to main menu\n'
+            ).lower()
         return choice
 
     @staticmethod
@@ -296,11 +323,38 @@ class Views:
         input("\nPress any key to return to report menu..\n")
 
     @staticmethod
-    def list_all_rounds(tournament):
-        """"""
-        pass
+    def list_all_rounds(roundlist):
+        """
+        :param roundlist: List of all rounds
+        :return: a view of all rounds from a tournament
+        """
+        for rounds in roundlist:
+            print(rounds)
+        input("\nPress any key to return to report menu..\n")
 
     @staticmethod
-    def list_all_matches(tournament):
-        """"""
-        pass
+    def list_all_matches(matchlist):
+        """
+        :param matchlist: list of all matches
+        :return: a view of all matches from a tournament
+        """
+        matchcount = 1
+        roundcount = 1
+        print('Round 1 : ')
+        for match in matchlist:
+            player1 = match[0]
+            player2 = match[1]
+            result1 = match[2]
+            result2 = match[3]
+            fstring = f"Match {matchcount} : {player1} [{result1}]" \
+                      f" - [{result2}] {player2}"
+            print(fstring)
+            if matchcount % 4 == 0:
+                matchcount = 1
+                roundcount += 1
+                fstring2 = f"\nRound {roundcount} :"
+                print(fstring2)
+            else:
+                matchcount += 1
+
+        input("\nPress any key to return to report menu..\n")

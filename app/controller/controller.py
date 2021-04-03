@@ -36,6 +36,7 @@ class Controller:
         sends user to player picker view
         """
         insert = None
+        tournament = None
         while insert is None:
             name, place, date, timetype, desc = self.view.new_tournament()
             tournament = tournaments.Tournament(name, place, date, timetype, desc)
@@ -165,7 +166,7 @@ class Controller:
         :return: reports menu choice picker
         """
         choice = self.view.reports_menu()
-        choice_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g','m']
+        choice_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'm']
         choice_func = [
             self.all_player_alpha_sort,
             self.all_players_elo_sort,
@@ -250,8 +251,7 @@ class Controller:
         tlist = self.tgetter.tourid_to_tour(tidlist)
         tourid = self.view.tournament_choice_picker(tlist)
         rlist = self.tgetter.return_rounds(tourid)
-        for item in rlist:
-            print(item)
+        self.view.list_all_rounds(rlist)
         self.start_reports()
 
     def list_all_matches(self):
@@ -262,8 +262,12 @@ class Controller:
         tlist = self.tgetter.tourid_to_tour(tidlist)
         tourid = self.view.tournament_choice_picker(tlist)
         mlist = self.tgetter.return_all_matches(tourid)
-        for item in mlist:
-            print(item)
+        for match in mlist:
+            pid1toid = self.pgetter.get_player_by_id(match[0])
+            match[0] = pid1toid.firstName
+            pid2toid = self.pgetter.get_player_by_id(match[1])
+            match[1] = pid2toid.firstName
+        self.view.list_all_matches(mlist)
         self.start_reports()
 
     def resume_tt(self):
@@ -275,7 +279,7 @@ class Controller:
         choice = self.view.tournament_choice_picker(tlist)
         tourid = unfin[choice]
         name, place, date, timetype, desc = tlist[choice]
-        tournament = tournaments.Tournament(name, place, date, timetype, desc)
+        tournament = tournaments.Tournament(name, place,
+                                            date, timetype, desc)
+        print(tournament)
         self.tgetter.where_were_we(tourid)
-
-
