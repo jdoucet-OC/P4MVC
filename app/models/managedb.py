@@ -156,7 +156,11 @@ class TournamentDb:
         search1 = self.query.tournament == tourid
         matchlist = []
         for item in self.matches.search(search1):
-            matchlist.append(item)
+            player1 = item['player1']
+            player2 = item['player2']
+            result1 = item['result1']
+            result2 = item['result2']
+            matchlist.append([player1, player2, result1, result2])
         return matchlist
 
     def where_were_we(self, tourid):
