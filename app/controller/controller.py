@@ -35,9 +35,13 @@ class Controller:
         :return: creates a new tournament, from demo players, or
         sends user to player picker view
         """
-        name, place, date, timetype, desc = self.view.new_tournament()
-        tournament = tournaments.Tournament(name, place, date, timetype, desc)
-        tournament.insert_tournament()
+        insert = None
+        while insert is None:
+            name, place, date, timetype, desc = self.view.new_tournament()
+            tournament = tournaments.Tournament(name, place, date, timetype, desc)
+            insert = tournament.insert_tournament()
+            if insert is None:
+                print('test tournoi déjà là')
         players = self.view.add_players()
         if players == "a":
             self.demo_players(tournament)
@@ -113,18 +117,19 @@ class Controller:
         theround.insert_matches(tournament, index)
         if tournament.turns == len(tournament.tournees):
             self.view.show_results(theround.matches)
-            # scoreboard à ajouter
-            self.end_tournament()
+            self.end_tournament(tournament)
         else:
             self.view.show_results(theround.matches)
             self.view.go_next_round()
             self.next_rounds(tournament)
 
-    def end_tournament(self):
+    def end_tournament(self, tournament):
         """
         :return: ends tournament and returns to main menu
         """
         self.view.tournament_end_view()
+        sortedscorelist = tournament.sort_by_score()
+        self.view.scoreboard(sortedscorelist)
         self.run()
 
     def pick_players(self, tournament):
@@ -152,7 +157,7 @@ class Controller:
             self.run()
         playerind = (players[int(index)-1])
         new_elo = self.view.edit_elo(playerind)
-        playerind.modify_elo(int(new_elo))
+        playerind.modify_elo(new_elo)
         self.edit_players()
 
     def start_reports(self):
@@ -160,7 +165,7 @@ class Controller:
         :return: reports menu choice picker
         """
         choice = self.view.reports_menu()
-        choice_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+        choice_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g','m']
         choice_func = [
             self.all_player_alpha_sort,
             self.all_players_elo_sort,
@@ -168,7 +173,8 @@ class Controller:
             self.tournament_elo_sort,
             self.all_tournaments,
             self.list_all_rounds,
-            self.list_all_matches
+            self.list_all_matches,
+            self.run
         ]
         for letter in choice_list:
             if choice == letter:
@@ -200,7 +206,8 @@ class Controller:
         :return: sends a list of all players in one tournament,
         sorted alphabetically
         """
-        tlist = self.tgetter.return_tournaments()
+        tidlist = self.tgetter.return_all_tournaments_id()
+        tlist = self.tgetter.tourid_to_tour(tidlist)
         tourid = self.view.tournament_choice_picker(tlist)
         pidlist = self.tgetter.return_player_tournament(tourid)
         playerlist = []
@@ -215,7 +222,8 @@ class Controller:
         :return: sends a list of all players in one tournament,
         sorted by elo
         """
-        tlist = self.tgetter.return_tournaments()
+        tidlist = self.tgetter.return_all_tournaments_id()
+        tlist = self.tgetter.tourid_to_tour(tidlist)
         tourid = self.view.tournament_choice_picker(tlist)
         pidlist = self.tgetter.return_player_tournament(tourid)
         playerlist = []
@@ -229,7 +237,8 @@ class Controller:
         """
         :return: all tournaments
         """
-        tlist = self.tgetter.return_tournaments()
+        tidlist = self.tgetter.return_all_tournaments_id()
+        tlist = self.tgetter.tourid_to_tour(tidlist)
         self.view.list_all_tournaments(tlist)
         self.start_reports()
 
@@ -237,7 +246,8 @@ class Controller:
         """
         :return: all rounds from one tournament
         """
-        tlist = self.tgetter.return_tournaments()
+        tidlist = self.tgetter.return_all_tournaments_id()
+        tlist = self.tgetter.tourid_to_tour(tidlist)
         tourid = self.view.tournament_choice_picker(tlist)
         rlist = self.tgetter.return_rounds(tourid)
         for item in rlist:
@@ -248,7 +258,8 @@ class Controller:
         """
         :return: all matches from one tournament
         """
-        tlist = self.tgetter.return_tournaments()
+        tidlist = self.tgetter.return_all_tournaments_id()
+        tlist = self.tgetter.tourid_to_tour(tidlist)
         tourid = self.view.tournament_choice_picker(tlist)
         mlist = self.tgetter.return_all_matches(tourid)
         for item in mlist:
@@ -257,6 +268,14 @@ class Controller:
 
     def resume_tt(self):
         """
-        :return: resumes picked unfinished tournament
+        :return: resumes the chosen unfinished tournament
         """
-        self.tgetter.return_unfinished_tournaments()
+        unfin = self.tgetter.return_unfinished_tourids()
+        tlist = self.tgetter.tourid_to_tour(unfin)
+        choice = self.view.tournament_choice_picker(tlist)
+        tourid = unfin[choice]
+        name, place, date, timetype, desc = tlist[choice]
+        tournament = tournaments.Tournament(name, place, date, timetype, desc)
+        self.tgetter.where_were_we(tourid)
+
+

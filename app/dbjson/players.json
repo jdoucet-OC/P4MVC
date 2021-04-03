@@ -1,16 +1,1 @@
-{"players": {"1": {"id": 0, "lname": "mcgill", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1944},
-  "2": {"id": 1, "lname": "mcgales", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1873},
-  "3": {"id": 2, "lname": "doucet", "fname": "jason", "bdate": "12/11/1997", "genre": "M", "elo": 1281},
-  "4": {"id": 3, "lname": "laroche", "fname": "r\u00e9mi", "bdate": "09/07/1997", "genre": "M", "elo": 1281},
-  "5": {"id": 4, "lname": "mcgill", "fname": "jane", "bdate": "18/04/1947", "genre": "F", "elo": 1603},
-  "6": {"id": 5, "lname": "wonderland", "fname": "alice", "bdate": "21/06/1984", "genre": "F", "elo": 1551},
-  "7": {"id": 6, "lname": "dove", "fname": "betty", "bdate": "28/01/45", "genre": "F", "elo": 2117},
-  "8": {"id": 7, "lname": "riana", "fname": "nono", "bdate": "14/08/2000", "genre": "F", "elo": 2100}},
-  "demo": {"1": {"id": 0, "lname": "mcgill", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1950},
-    "2": {"id": 1, "lname": "mcgales", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1873},
-    "3": {"id": 2, "lname": "doucet", "fname": "jason", "bdate": "12/11/1997", "genre": "M", "elo": 1281},
-    "4": {"id": 3, "lname": "laroche", "fname": "r\u00e9mi", "bdate": "09/07/1997", "genre": "M", "elo": 1281},
-    "5": {"id": 4, "lname": "mcgill", "fname": "jane", "bdate": "18/04/1947", "genre": "F", "elo": 1603},
-    "6": {"id": 5, "lname": "wonderland", "fname": "alice", "bdate": "21/06/1984", "genre": "F", "elo": 1551},
-    "7": {"id": 6, "lname": "dove", "fname": "betty", "bdate": "28/01/45", "genre": "F", "elo": 2117},
-    "8": {"id": 7, "lname": "riana", "fname": "nono", "bdate": "14/08/2000", "genre": "F", "elo": 2108}}}
+{"players": {"1": {"id": 0, "lname": "mcgill", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1944}, "2": {"id": 1, "lname": "mcgales", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1873}, "3": {"id": 2, "lname": "doucet", "fname": "jason", "bdate": "12/11/1997", "genre": "M", "elo": 1281}, "4": {"id": 3, "lname": "laroche", "fname": "r\u00e9mi", "bdate": "09/07/1997", "genre": "M", "elo": 1281}, "5": {"id": 4, "lname": "mcgill", "fname": "jane", "bdate": "18/04/1947", "genre": "F", "elo": 1603}, "6": {"id": 5, "lname": "wonderland", "fname": "alice", "bdate": "21/06/1984", "genre": "F", "elo": 1551}, "7": {"id": 6, "lname": "dove", "fname": "betty", "bdate": "28/01/45", "genre": "F", "elo": 2678}, "8": {"id": 7, "lname": "riana", "fname": "nono", "bdate": "14/08/2000", "genre": "F", "elo": 2100}}, "demo": {"1": {"id": 0, "lname": "mcgill", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1950}, "2": {"id": 1, "lname": "mcgales", "fname": "james", "bdate": "21/12/1976", "genre": "M", "elo": 1873}, "3": {"id": 2, "lname": "doucet", "fname": "jason", "bdate": "12/11/1997", "genre": "M", "elo": 1281}, "4": {"id": 3, "lname": "laroche", "fname": "r\u00e9mi", "bdate": "09/07/1997", "genre": "M", "elo": 1281}, "5": {"id": 4, "lname": "mcgill", "fname": "jane", "bdate": "18/04/1947", "genre": "F", "elo": 1603}, "6": {"id": 5, "lname": "wonderland", "fname": "alice", "bdate": "21/06/1984", "genre": "F", "elo": 1551}, "7": {"id": 6, "lname": "dove", "fname": "betty", "bdate": "28/01/45", "genre": "F", "elo": 2117}, "8": {"id": 7, "lname": "riana", "fname": "nono", "bdate": "14/08/2000", "genre": "F", "elo": 2108}}}

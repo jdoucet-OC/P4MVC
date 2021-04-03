@@ -9,12 +9,15 @@ class Views:
         """
         :return: input for choice menu
         """
-        print('Chess Tournament Menu :\n')
-        choice = input('A: New Tournament\n'
-                       'B: Resume Tournament\n'
-                       'C: Edit Players\n'
-                       'D: Reports\n'
-                       'Q: Quit\n').lower()
+        choicelist = ['a', 'b', 'c', 'd', 'q']
+        choice = None
+        while choice not in choicelist:
+            print('Chess Tournament Menu :\n')
+            choice = input('A: New Tournament\n'
+                           'B: Resume Tournament\n'
+                           'C: Edit Players\n'
+                           'D: Reports\n'
+                           'Q: Quit\n').lower()
         return choice
 
     @staticmethod
@@ -36,8 +39,11 @@ class Views:
         :return: input of player type for tournament
         """
         print("\n\nAdd players")
-        players = input("A: Add 8 Pre-selected Player ( demo )\n"
-                        "B: Pick 8 Players\n").lower()
+        choicelist = ['a', 'b']
+        players = None
+        while players not in choicelist:
+            players = input("A: Add 8 Pre-selected Player ( demo )\n"
+                            "B: Pick 8 Players\n").lower()
         return players
 
     @staticmethod
@@ -82,12 +88,15 @@ class Views:
         :return: input of results to enter
         """
         results = []
+
         for match in matches:
             player1 = match[0][0].lastName
             player2 = match[1][0].lastName
-            fstring = f"Winner : [A] {player1} or [B] {player2}" \
+
+            fstring = f"Winner : {player1} [A] or [B] {player2}" \
                       f"\nDraw : [C]\n"
-            results.append(input(fstring).lower())
+            choice = input(fstring).lower()
+            results.append(choice)
         return results
 
     @staticmethod
@@ -108,6 +117,25 @@ class Views:
             ii += 1
 
     @staticmethod
+    def scoreboard(sortedscorelist):
+        """
+        :param sortedscorelist: list of matches, unformatted
+        :return: list of matches to be played, formatted
+        """
+        print("Here's the scoreboard :\n")
+        ranking = 1
+        for match in sortedscorelist:
+            playerln = match[0].lastName
+            playerfn = match[0].firstName
+            elo = match[0].elo
+            score = match[1]
+            fstring = f"{ranking} : [{score}] {playerfn} {playerln} - {elo}"
+            print(fstring)
+            ranking += 1
+        input("\nPress any key to end tournament"
+              " and return to main menu...\n")
+
+    @staticmethod
     def go_next_round():
         """
         :return: input to go next round
@@ -119,8 +147,8 @@ class Views:
         """
         :return: input to return to main menu
         """
-        print("This is the end!")
-        input("Press any Key to go to main menu...")
+        print("\nThis is the end!")
+        input("Press any Key to go to view scoreboard...")
 
     @staticmethod
     def resume_tournament():
@@ -135,6 +163,10 @@ class Views:
         :param players: players object
         :return: list of players, to choose from
         """
+        choicelist = ['a']
+        choice = None
+        for jj in range(0, len(players)+1):
+            choicelist.append(str(jj))
         ii = 1
         print("\n\nPick which player you want to edit :\n")
         for player in players:
@@ -145,7 +177,9 @@ class Views:
             print(fstring)
             ii += 1
         print('[A] : Return to Menu\n')
-        return input().lower()
+        while choice not in choicelist:
+            choice = input().lower()
+        return choice
 
     @staticmethod
     def edit_elo(player):
@@ -158,7 +192,7 @@ class Views:
         elo = player.elo
         fstring = f"{fname} {lname} - Elo = {elo}" \
                   f"\nChoose new elo : "
-        elo = input(fstring)
+        elo = int(input(fstring))
         return elo
 
     @staticmethod
@@ -166,6 +200,7 @@ class Views:
         """
         :return: input of menu to go to
         """
+
         choice = input(
             'List all players :\n'
             '  [A] : Alphabetical sort\n'
@@ -176,6 +211,7 @@ class Views:
             '[E] List all tournaments\n'
             '[F] List all rounds in one tournament\n'
             '[G] List all matches in one tournament\n'
+            '[M] Return to main menu\n'
         ).lower()
         return choice
 
@@ -261,8 +297,10 @@ class Views:
 
     @staticmethod
     def list_all_rounds(tournament):
+        """"""
         pass
 
     @staticmethod
     def list_all_matches(tournament):
+        """"""
         pass

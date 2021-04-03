@@ -38,14 +38,15 @@ class Tournament:
 
         }
 
-        cond1 = self.tdb.query.name == self.name.lower()
-        cond2 = self.tdb.query.place == self.place.lower()
-        cond3 = self.tdb.query.date == self.date
-
-        search1 = self.tdb.tournament.search(cond1 & cond2 & cond3)
-
-        if not search1:
-            self.tdb.tournament.insert(ser_tournament)
+        for tours in self.tdb.tournament.all():
+            cond1 = tours['name'] == self.name.lower()
+            cond2 = tours['place'] == self.place.lower()
+            cond3 = tours['date'] == self.date
+            if cond1 and cond2 and cond3:
+                return None
+            else:
+                self.tdb.tournament.insert(ser_tournament)
+                return 1
 
     def sort_by_score(self):
         """
@@ -72,3 +73,5 @@ class Tournament:
         """
         sortedlist = sorted(self.players, key=lambda elosort: elosort.elo)
         return sortedlist
+
+

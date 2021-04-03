@@ -95,17 +95,43 @@ class TournamentDb:
             pidlist.append(item['player2'])
         return pidlist
 
-    def return_tournaments(self):
+    def return_all_tournaments_id(self):
         """
         :return: all tournaments
         """
-        tourlist = []
+        touridlist = []
         for tournament in self.tournament.all():
-            name = tournament['name'].capitalize()
-            place = tournament['place'].capitalize()
-            date = tournament['date']
-            timetype = tournament['timeType']
-            tourlist.append((name, place, date, timetype))
+            touridlist.append(tournament['id'])
+        return touridlist
+
+    def return_unfinished_tourids(self):
+        """
+        :return: tournament ID of tournament with less than 16 matches
+        """
+        tourids = []
+        unfinished_tourids = []
+        for tournament in self.tournament.all():
+            tourids.append(tournament['id'])
+        for tourid in tourids:
+            search1 = self.query.tournament == tourid
+            matchlist = []
+            for item in self.matches.search(search1):
+                matchlist.append(item)
+            if len(matchlist) < 16:
+                unfinished_tourids.append(tourid)
+        return unfinished_tourids
+
+    def tourid_to_tour(self, touridlist):
+        tourlist = []
+        for tourid in touridlist:
+            cond1 = self.query.id == tourid
+            search1 = self.tournament.search(cond1)[0]
+            name = search1['name'].capitalize()
+            place = search1['place'].capitalize()
+            date = search1['date']
+            timetype = search1['timeType']
+            desc = search1['description']
+            tourlist.append((name, place, date, timetype, desc))
         return tourlist
 
     def return_rounds(self, tourid):
@@ -133,19 +159,18 @@ class TournamentDb:
             matchlist.append(item)
         return matchlist
 
-    def return_unfinished_tournaments(self):
-        """
-        :return: tournament ID of tournament with less than 16 matches
-        """
-        tourids = []
-        unfinished_tour = []
-        for tournament in self.tournament.all():
-            tourids.append(tournament['id'])
-        for tourid in tourids:
-            search1 = self.query.tournament == tourid
-            matchlist = []
-            for item in self.matches.search(search1):
-                matchlist.append(item)
-            if len(matchlist) < 16:
-                unfinished_tour.append(tourid)
-            return tourid
+    def where_were_we(self, tourid):
+        search1 = self.query.tournament == tourid
+        total_matches = int(len(self.matches.search(search1))/4)
+        total_rounds = len(self.rounds.search(search1))
+        if total_rounds != total_matches:
+            print('oui')
+            roundid = total_rounds-1
+            self.del_last_round(tourid, roundid)
+
+    def del_last_round(self, tourid, roundid):
+        cond1 = self.query.tournament == tourid
+        cond2 = self.query.id == roundid
+        self.rounds.remove((cond1) & (cond2))
+
+
