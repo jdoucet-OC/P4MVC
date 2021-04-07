@@ -9,15 +9,16 @@ class Views:
         """
         :return: input for choice menu
         """
-        choicelist = ['a', 'b', 'c', 'd', 'q']
+        choicelist = ['a', 'b', 'c', 'd', 'x']
         choice = None
         while choice not in choicelist:
-            print('Chess Tournament Menu :\n')
+            print('\nWelcome!\n'
+                  'Chess Tournament Menu :\n')
             choice = input('[A] New Tournament\n'
                            '[B] Resume Tournament\n'
-                           '[C] Edit Players\n'
+                           '[C] Players Management\n'
                            '[D] Reports\n'
-                           '[Q] Quit\n').lower()
+                           '[X] Quit\n').lower()
         return choice
 
     @staticmethod
@@ -48,10 +49,14 @@ class Views:
         choice = None
         while choice not in choice_list:
             choice = input("TimeType :\n[1] Bullet\n[2] Blitz\n"
-                           "[3] Coup Rapide")
+                           "[3] Coup Rapide\n")
         timetype = to_list[int(choice)-1]
         desc = input("Description : ")
         return tname, tplace, tdate, timetype, desc
+
+    @staticmethod
+    def tournament_already_true():
+        print('Tournament already exists\n')
 
     @staticmethod
     def add_players():
@@ -180,12 +185,28 @@ class Views:
         print("Resuming previous tournament...")
 
     @staticmethod
+    def edit_players_menu():
+        """
+        :return: menu choice
+        """
+
+        choicelist = ['a', 'b', 'm']
+        choice = None
+        print('\n\nPlayer Management Menu:\n')
+
+        while choice not in choicelist:
+            choice = input('[A] Add new Player\n'
+                           '[B] Edit Player Elo\n'
+                           '[M] Return to Main Menu\n').lower()
+        return choice
+
+    @staticmethod
     def show_players_edit(players):
         """
         :param players: players object
         :return: list of players, to choose from
         """
-        choicelist = ['a']
+        choicelist = ['m']
         choice = None
         for jj in range(0, len(players)+1):
             choicelist.append(str(jj))
@@ -198,7 +219,7 @@ class Views:
             fstring = f"[{ii}] : {fname} {lname} - Elo = {elo}"
             print(fstring)
             ii += 1
-        print('[A] : Return to Menu\n')
+        print('[M] : Return to Player Edit Menu\n')
         while choice not in choicelist:
             choice = input().lower()
         return choice
@@ -218,6 +239,32 @@ class Views:
                       f"\nChoose new elo : "
             new_elo = int(input(fstring))
         return new_elo
+
+    @staticmethod
+    def add_player_view():
+        """
+        :return: list of attributes to save new Player
+        """
+        print('Player addition menu : \n')
+        fname = input('First name : ')
+        lname = input('Last name : ')
+
+        print("Birth Date ( format : dd/mm/yyyy ) : ")
+        jdate = -2
+        while jdate > 31 or jdate <= 0:
+            jdate = int(input("Day : "))
+        mdate = -2
+        while mdate > 12 or mdate <= 0:
+            mdate = int(input("Month : "))
+        ydate = -2
+        while ydate > 2015 or ydate <= 1900:
+            ydate = int(input("Year : "))
+        if mdate < 10:
+            mdate = f"0{mdate}"
+        bdate = "/".join([str(jdate), str(mdate), str(ydate)])
+        genre = input('Genre : ')
+        elo = int(input('Elo : '))
+        return fname, lname, bdate, genre, elo
 
     @staticmethod
     def reports_menu():
@@ -349,7 +396,7 @@ class Views:
             fstring = f"Match {matchcount} : {player1} [{result1}]" \
                       f" - [{result2}] {player2}"
             print(fstring)
-            if matchcount % 4 == 0:
+            if matchcount % 4 == 0 and roundcount != 4:
                 matchcount = 1
                 roundcount += 1
                 fstring2 = f"\nRound {roundcount} :"

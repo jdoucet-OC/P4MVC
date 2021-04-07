@@ -13,22 +13,21 @@ class Controller:
         self.view = view
         self.pgetter = pgetter
         self.tgetter = tgetter
+        self.tournament = None
 
     def run(self):
         """
         :return: main menu views
         """
         choice = self.view.menu()
-        if choice == "a":
-            self.new_tt()
-        if choice == "b":
-            self.resume_tt()
-        if choice == "c":
-            self.edit_players()
-        if choice == "d":
-            self.start_reports()
-        if choice == "q":
-            quit()
+        choice_list = ['a', 'b', 'c', 'd', 'x']
+        funcs_list = [self.new_tt, self.new_tt,
+                      self.edit_players,
+                      self.start_reports, quit]
+        for letter in choice_list:
+            if choice == letter:
+                index = choice_list.index(choice)
+                funcs_list[index]()
 
     def new_tt(self):
         """
@@ -36,106 +35,103 @@ class Controller:
         sends user to player picker view
         """
         insert = None
-        tournament = None
         while insert is None:
             name, place, date, timetype, desc = self.view.new_tournament()
-            tournament = tournaments.Tournament(name, place, date, timetype, desc)
-            insert = tournament.insert_tournament()
+            self.tournament = tournaments.Tournament(name, place, date, timetype, desc)
+            insert = self.tournament.insert_tournament()
             if insert is None:
-                print('test tournoi déjà là')
+                self.view.tournament_already_true()
         players = self.view.add_players()
         if players == "a":
-            self.demo_players(tournament)
+            self.demo_players()
         if players == "b":
-            self.pick_players(tournament)
+            self.pick_players()
 
-    def demo_players(self, tournament):
+    def demo_players(self):
         """
-        :param tournament: the currently played tournament instance
         :return: starts first round with demo players
         """
-        tournament.players = self.pgetter.return_demo()
-        tournament.players = tournament.sort_by_elo()
-        self.view.show_pname(tournament.players)
-        self.first_round(tournament)
+        self.tournament.players = self.pgetter.return_demo()
+        self.tournament.players = self.tournament.sort_by_elo()
+        self.view.show_pname(self.tournament.players)
+        self.first_round()
 
-    def first_round(self, tournament):
+    def first_round(self):
         """
-        :param tournament: the currently played tournament instance
         :return: plays first round, and manages scores
         """
-        middle = len(tournament.players) // 2
-        lowerhalf = tournament.players[:middle]
-        upperhalf = tournament.players[middle:]
+        middle = len(self.tournament.players) // 2
+        lowerhalf = self.tournament.players[:middle]
+        upperhalf = self.tournament.players[middle:]
         tour1 = []
+        # création du premier bracket
         for ii in range(0, middle):
             tour1.append(([lowerhalf[ii], 0], [upperhalf[ii], 0]))
         round1 = round.Round('Round1', tour1)
-        tournament.tournees.append(round1)
+        self.tournament.tournees.append(round1)
 
         # insertion du round 1
-        round1.insert_round(tournament, 0)
+        round1.insert_round(self.tournament, 0)
 
         # Préparation du match
         self.view.show_elo_match(round1.matches)
         results = self.view.enter_results(round1.matches)
-        self.process_results(tournament, results)
+        self.process_results(results)
 
-    def next_rounds(self, tournament):
+    def next_rounds(self):
         """
-        :param tournament: the currently played tournament instance
         :return: plays the "next round" until round limit is
         reached
         """
-        roundnumber = len(tournament.tournees)+1
+        roundnumber = len(self.tournament.tournees)+1
         fstring = f"Round{roundnumber}"
-        sortedscorelist = tournament.sort_by_score()
+        sortedscorelist = self.tournament.sort_by_score()
         nexttour = []
+        # préparation des nexts brackets
         for ii in range(0, len(sortedscorelist), 2):
             nexttour.append((sortedscorelist[ii], sortedscorelist[ii+1]))
         nextround = round.Round(fstring, nexttour)
-        tournament.tournees.append(nextround)
+        self.tournament.tournees.append(nextround)
 
         # insertion des rounds suivant
         indexr = roundnumber-1
-        nextround.insert_round(tournament, indexr)
+        nextround.insert_round(self.tournament, indexr)
 
         # Préparation du match
         self.view.show_elo_match(nextround.matches)
         results = self.view.enter_results(nextround.matches)
-        self.process_results(tournament, results)
+        self.process_results(results)
 
-    def process_results(self, tournament, results):
+    def process_results(self, results):
         """
-        :param tournament: the currently played tournament instance
         :param results: results from the last played match
         :return: starts next round, or ends tournament if
         tournament round limit is reached
         """
-        index = len(tournament.tournees)-1
-        theround = tournament.tournees[index]
+        index = len(self.tournament.tournees)-1
+        theround = self.tournament.tournees[index]
         theround.enter_scores(results)
-        theround.insert_matches(tournament, index)
-        if tournament.turns == len(tournament.tournees):
+        theround.insert_matches(self.tournament, index)
+        if self.tournament.turns == \
+                len(self.tournament.tournees):
             self.view.show_results(theround.matches)
-            self.end_tournament(tournament)
+            self.end_tournament()
         else:
             self.view.show_results(theround.matches)
             self.view.go_next_round()
-            self.next_rounds(tournament)
+            self.next_rounds()
 
-    def end_tournament(self, tournament):
+    def end_tournament(self):
         """
         :return: ends tournament and returns to main menu
         """
         self.view.tournament_end_view()
-        sortedscorelist = tournament.sort_by_score()
+        sortedscorelist = self.tournament.sort_by_score()
         self.view.scoreboard(sortedscorelist)
         self.run()
 
-    def pick_players(self, tournament):
+    def pick_players(self):
         """
-        :param tournament: the currently played tournament instance
         :return: user picks 8 players ID, and plays first round
         """
         choicelist = self.pgetter.return_players()
@@ -143,23 +139,39 @@ class Controller:
         playerlist = []
         for pid in pidlist:
             playerlist.append(self.pgetter.get_player_by_id(pid))
-        tournament.players = playerlist
-        tournament.players = tournament.sort_by_elo()
-        self.view.show_pname(tournament.players)
-        self.first_round(tournament)
+        self.tournament.players = playerlist
+        self.tournament.players = self.tournament.sort_by_elo()
+        self.view.show_pname(self.tournament.players)
+        self.first_round()
 
     def edit_players(self):
+        choice = self.view.edit_players_menu()
+        choice_list = ['a', 'b', 'm']
+        func_list = [self.add_players,
+                     self.edit_elo_players,
+                     self.run]
+
+        for letter in choice_list:
+            if choice == letter:
+                index = choice_list.index(choice)
+                func_list[index]()
+
+    def add_players(self):
+        new_player = self.view.add_player_view()
+        pass
+
+    def edit_elo_players(self):
         """
         :return: player elo edit, until "a" key press
         """
         players = self.pgetter.return_players()
         index = self.view.show_players_edit(players)
-        if index == 'a':
-            self.run()
+        if index == 'm':
+            self.edit_players()
         playerind = (players[int(index)-1])
         new_elo = self.view.edit_elo(playerind)
         playerind.modify_elo(new_elo)
-        self.edit_players()
+        self.edit_elo_players()
 
     def start_reports(self):
         """
