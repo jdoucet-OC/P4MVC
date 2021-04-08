@@ -4,6 +4,7 @@ class Views:
         """"""
         pass
 
+
     @staticmethod
     def menu():
         """
@@ -33,14 +34,25 @@ class Views:
 
         jdate = -2
         while jdate > 31 or jdate <= 0:
-            jdate = int(input("Day : "))
+            try:
+                jdate = int(input("Day : "))
+            except ValueError:
+                print('Expected a number\n')
         mdate = -2
         while mdate > 12 or mdate <= 0:
-            mdate = int(input("Month : "))
+            try:
+                mdate = int(input("Month : "))
+            except ValueError:
+                print('Expected a number\n')
         ydate = -2
         while ydate > 2500 or ydate <= 0:
-            ydate = int(input("Year : "))
+            try:
+                ydate = int(input("Year : "))
+            except ValueError:
+                print('Expected a number\n')
         if mdate < 10:
+            mdate = f"0{mdate}"
+        if jdate < 10:
             mdate = f"0{mdate}"
         tdate = "/".join([str(jdate), str(mdate), str(ydate)])
 
@@ -237,7 +249,10 @@ class Views:
         while new_elo < 0 or new_elo > 3500:
             fstring = f"{fname} {lname} - Elo = {elo}" \
                       f"\nChoose new elo : "
-            new_elo = int(input(fstring))
+            try:
+                new_elo = int(input(fstring))
+            except ValueError:
+                print('Expected a number\n')
         return new_elo
 
     @staticmethod
@@ -252,14 +267,25 @@ class Views:
         print("Birth Date ( format : dd/mm/yyyy ) : ")
         jdate = -2
         while jdate > 31 or jdate <= 0:
-            jdate = int(input("Day : "))
+            try:
+                jdate = int(input("Day : "))
+            except ValueError:
+                print('Expected a number\n')
         mdate = -2
         while mdate > 12 or mdate <= 0:
-            mdate = int(input("Month : "))
+            try:
+                mdate = int(input("Month : "))
+            except ValueError:
+                print('Expected a number\n')
         ydate = -2
         while ydate > 2015 or ydate <= 1900:
-            ydate = int(input("Year : "))
+            try:
+                ydate = int(input("Year : "))
+            except ValueError:
+                print('Expected a number\n')
         if mdate < 10:
+            mdate = f"0{mdate}"
+        if jdate < 10:
             mdate = f"0{mdate}"
         bdate = "/".join([str(jdate), str(mdate), str(ydate)])
         genre = input('Genre : ')
