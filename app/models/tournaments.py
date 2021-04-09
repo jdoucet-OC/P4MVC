@@ -86,5 +86,3 @@ class Tournament:
         """
         sortedlist = sorted(self.players, key=lambda elosort: elosort.elo)
         return sortedlist
-
-
