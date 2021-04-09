@@ -1,4 +1,5 @@
 from ..models import tournaments, round
+from ..models import player
 
 
 class Controller:
@@ -157,8 +158,14 @@ class Controller:
                 func_list[index]()
 
     def add_players(self):
-        new_player = self.view.add_player_view()
-        pass
+        fname, lname, bdate, genre, elo = self.view.add_player_view()
+        newplayer = player.Player(fname, lname, bdate, genre, elo)
+        newplayer.insert_player()
+        choice = self.view.continue_adding()
+        if choice == 'y':
+            self.add_players()
+        else:
+            self.run()
 
     def edit_elo_players(self):
         """
