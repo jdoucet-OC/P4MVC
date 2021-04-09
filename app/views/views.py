@@ -289,8 +289,22 @@ class Views:
             mdate = f"0{mdate}"
         bdate = "/".join([str(jdate), str(mdate), str(ydate)])
         genre = input('Genre : ')
-        elo = int(input('Elo : '))
+        elo = 3200
+        while elo > 3100 or elo <= 0:
+            try:
+                elo = int(input('Elo : '))
+            except ValueError:
+                print('Expected a number\n')
         return fname, lname, bdate, genre, elo
+
+    @staticmethod
+    def continue_adding():
+        choice = None
+        choicelist = ['y', 'n']
+        while choice not in choicelist:
+            choice = input('Would like to add another player?'
+                           '\n[Y]es/[N]o\n').lower()
+        return choice
 
     @staticmethod
     def reports_menu():
