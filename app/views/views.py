@@ -4,7 +4,6 @@ class Views:
         """"""
         pass
 
-
     @staticmethod
     def menu():
         """

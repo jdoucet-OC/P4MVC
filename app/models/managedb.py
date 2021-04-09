@@ -178,5 +178,3 @@ class TournamentDb:
         cond1 = self.query.tournament == tourid
         cond2 = self.query.id == roundid
         self.rounds.remove((cond1) & (cond2))
-
-

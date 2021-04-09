@@ -38,7 +38,8 @@ class Controller:
         insert = None
         while insert is None:
             name, place, date, timetype, desc = self.view.new_tournament()
-            self.tournament = tournaments.Tournament(name, place, date, timetype, desc)
+            self.tournament = tournaments.Tournament(name, place,
+                                                     date, timetype, desc)
             insert = self.tournament.insert_tournament()
             if insert is None:
                 self.view.tournament_already_true()
@@ -310,3 +311,4 @@ class Controller:
         self.tournament = tournaments.Tournament(name, place, date,
                                                  timetype, desc)
         roundid = self.tgetter.where_were_we(tourid)
+        print(roundid)
