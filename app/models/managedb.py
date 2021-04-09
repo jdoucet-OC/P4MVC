@@ -168,9 +168,11 @@ class TournamentDb:
         total_matches = int(len(self.matches.search(search1))/4)
         total_rounds = len(self.rounds.search(search1))
         if total_rounds != total_matches:
-            print('oui')
             roundid = total_rounds-1
             self.del_last_round(tourid, roundid)
+        else:
+            roundid = total_rounds
+        print(roundid)
 
     def del_last_round(self, tourid, roundid):
         cond1 = self.query.tournament == tourid

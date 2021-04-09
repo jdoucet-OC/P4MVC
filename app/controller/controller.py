@@ -22,7 +22,7 @@ class Controller:
         """
         choice = self.view.menu()
         choice_list = ['a', 'b', 'c', 'd', 'x']
-        funcs_list = [self.new_tt, self.new_tt,
+        funcs_list = [self.new_tt, self.resume_tt,
                       self.edit_players,
                       self.start_reports, quit]
         for letter in choice_list:
@@ -67,7 +67,8 @@ class Controller:
         tour1 = []
         # création du premier bracket
         for ii in range(0, middle):
-            tour1.append(([lowerhalf[ii], 0], [upperhalf[ii], 0]))
+            thematch = ([lowerhalf[ii], 0], [upperhalf[ii], 0])
+            tour1.append(thematch)
         round1 = round.Round('Round1', tour1)
         self.tournament.tournees.append(round1)
 
@@ -90,7 +91,15 @@ class Controller:
         nexttour = []
         # préparation des nexts brackets
         for ii in range(0, len(sortedscorelist), 2):
-            nexttour.append((sortedscorelist[ii], sortedscorelist[ii+1]))
+            thematch = (sortedscorelist[ii], sortedscorelist[ii + 1])
+            # vérifier si le joueur 1 à déjà jouer avec le joueur 2
+            if ii == 0:
+                if self.tournament.does_match_exist(thematch):
+                    sortedscorelist[1], sortedscorelist[2] =\
+                        sortedscorelist[2], sortedscorelist[1]
+                    thematch = (sortedscorelist[ii],
+                                sortedscorelist[ii + 1])
+            nexttour.append(thematch)
         nextround = round.Round(fstring, nexttour)
         self.tournament.tournees.append(nextround)
 
@@ -298,7 +307,6 @@ class Controller:
         choice = self.view.tournament_choice_picker(tlist)
         tourid = unfin[choice]
         name, place, date, timetype, desc = tlist[choice]
-        tournament = tournaments.Tournament(name, place,
-                                            date, timetype, desc)
-        print(tournament)
-        self.tgetter.where_were_we(tourid)
+        self.tournament = tournaments.Tournament(name, place, date,
+                                                 timetype, desc)
+        roundid = self.tgetter.where_were_we(tourid)
