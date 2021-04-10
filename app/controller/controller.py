@@ -156,6 +156,9 @@ class Controller:
         self.first_round()
 
     def edit_players(self):
+        """
+        :return: menu choice list
+        """
         choice = self.view.edit_players_menu()
         choice_list = ['a', 'b', 'm']
         func_list = [self.add_players,
@@ -168,6 +171,10 @@ class Controller:
                 func_list[index]()
 
     def add_players(self):
+        """
+        :return: adding player according to input returned by
+        the view
+        """
         fname, lname, bdate, genre, elo = self.view.add_player_view()
         newplayer = player.Player(fname, lname, bdate, genre, elo)
         newplayer.insert_player()
@@ -311,4 +318,23 @@ class Controller:
         self.tournament = tournaments.Tournament(name, place, date,
                                                  timetype, desc)
         roundid = self.tgetter.where_were_we(tourid)
-        print(roundid)
+        if roundid == 0:
+            players = self.view.add_players()
+            if players == "a":
+                self.demo_players()
+            if players == "b":
+                self.pick_players()
+        else:
+            mlist = self.tgetter.return_all_matches(tourid)
+            for match in mlist:
+                pid1toid = self.pgetter.get_player_by_id(match[0])
+                pid2toid = self.pgetter.get_player_by_id(match[1])
+                match[0], match[1] = pid1toid, pid2toid
+            # ajout des joueurs dans le tournoi
+            for ii in range(0, 4):
+                pass
+
+
+
+
+
