@@ -1,3 +1,4 @@
+
 # P4MVC
 
 ## Introduction
@@ -24,4 +25,5 @@ linux / mac : `source env/bin/activate`
 
 ## Example
 <img src="https://github.com/jdoucet-OC/P4MVC/blob/master/P4examples/Capture.PNG?raw=true">
+![Capture](https://user-images.githubusercontent.com/77237456/114267591-e2c06500-99fc-11eb-803c-9cf6fba908a8.png)
 
