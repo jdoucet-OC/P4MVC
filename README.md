@@ -24,6 +24,27 @@ linux / mac : `source env/bin/activate`
 `python main.py`  
 
 ## Example
-![alt text](P4examples/Capture.PNG)
+Main Menu :  
+![alt text](P4examples/Capture.PNG)  
+
+New tournament and matches played out :  
+![alt text](P4examples/Capture2.PNG)
+![alt text](P4examples/Capture3.PNG)
+![alt text](P4examples/Capture4.PNG)
+![alt text](P4examples/Capture5.PNG)  
+
+Player management (add player, edit elo ) :  
+
+![alt text](P4examples/Capture6.PNG)
+![alt text](P4examples/Capture8.PNG)  
+
+Report example ( show all players ):  
+
+![alt text](P4examples/Capture9.PNG)
+
+
+
+
+
 
 
