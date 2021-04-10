@@ -24,6 +24,6 @@ linux / mac : `source env/bin/activate`
 `python main.py`  
 
 ## Example
-[link text](master/P4examples/Capture.PNG?raw=true "ALT TEXT")
+[link text](P4examples/Capture.PNG?raw=true "ALT TEXT")
 
 
