@@ -25,4 +25,5 @@ linux / mac : `source env/bin/activate`
 
 ## Example
 <img src="https://github.com/jdoucet-OC/P4MVC/blob/master/P4examples/Capture.PNG?raw=true">
+[link text](master/P4examples/Capture.PNG?raw=true "ALT TEXT")
 
