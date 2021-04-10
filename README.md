@@ -23,5 +23,5 @@ linux / mac : `source env/bin/activate`
 `python main.py`  
 
 ## Example
-![](https://github.com/jdoucet-OC/P4MVC/blob/master/P4examples/Capture.PNG?raw=true)
+<img src="https://github.com/jdoucet-OC/P4MVC/blob/master/P4examples/Capture.PNG?raw=true">
 
