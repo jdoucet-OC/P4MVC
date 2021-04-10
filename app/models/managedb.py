@@ -164,17 +164,27 @@ class TournamentDb:
         return matchlist
 
     def where_were_we(self, tourid):
+        """
+        :param tourid: tournament id
+        :return: the round where the unfinished tournament is at
+        and deletes and empty round if there is one
+        """
         search1 = self.query.tournament == tourid
         total_matches = int(len(self.matches.search(search1))/4)
         total_rounds = len(self.rounds.search(search1))
         if total_rounds != total_matches:
-            roundid = total_rounds-1
-            self.del_last_round(tourid, roundid)
+            roundnumber = total_rounds-1
+            self.del_last_round(tourid, roundnumber)
         else:
-            roundid = total_rounds
-        print(roundid)
+            roundnumber = total_rounds
+        return roundnumber
 
     def del_last_round(self, tourid, roundid):
+        """
+        :param tourid: tournament id
+        :param roundid: round id
+        :return: deletes an empty round
+        """
         cond1 = self.query.tournament == tourid
         cond2 = self.query.id == roundid
         self.rounds.remove((cond1) & (cond2))

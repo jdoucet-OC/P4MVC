@@ -298,6 +298,10 @@ class Views:
 
     @staticmethod
     def continue_adding():
+        """
+        :return: input yes or no to continue adding players
+        or not
+        """
         choice = None
         choicelist = ['y', 'n']
         while choice not in choicelist:
