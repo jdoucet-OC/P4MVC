@@ -24,6 +24,6 @@ linux / mac : `source env/bin/activate`
 `python main.py`  
 
 ## Example
-[[P4examples/Capture.PNG]]
+![alt text](P4examples/Capture.PNG)
 
 
