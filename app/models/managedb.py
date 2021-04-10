@@ -151,7 +151,8 @@ class TournamentDb:
     def return_all_matches(self, tourid):
         """
         :param tourid: tournament ID
-        :return: matches corresponding to the tourid
+        :return: matches corresponding to the tourid ( p1, p2,
+        r1, r2)
         """
         search1 = self.query.tournament == tourid
         matchlist = []

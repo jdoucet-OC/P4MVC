@@ -310,6 +310,8 @@ class Controller:
         """
         :return: resumes the chosen unfinished tournament
         """
+        # list all unfinished tournaments ( get the tour ids that
+        # don't have 16 matches, and display it
         unfin = self.tgetter.return_unfinished_tourids()
         tlist = self.tgetter.tourid_to_tour(unfin)
         choice = self.view.tournament_choice_picker(tlist)
@@ -318,6 +320,9 @@ class Controller:
         self.tournament = tournaments.Tournament(name, place, date,
                                                  timetype, desc)
         roundid = self.tgetter.where_were_we(tourid)
+        # 2 choices, either we have no matches, then we pick players
+        # and start a brand "new" tournament, or we have matches
+        # and resumes to the next round
         if roundid == 0:
             players = self.view.add_players()
             if players == "a":
@@ -326,15 +331,27 @@ class Controller:
                 self.pick_players()
         else:
             mlist = self.tgetter.return_all_matches(tourid)
-            for match in mlist:
-                pid1toid = self.pgetter.get_player_by_id(match[0])
-                pid2toid = self.pgetter.get_player_by_id(match[1])
-                match[0], match[1] = pid1toid, pid2toid
             # ajout des joueurs dans le tournoi
-            for ii in range(0, 4):
-                pass
-
-
-
-
-
+            # et création des matchs dans un tuple(list)
+            matchcount = 1
+            roundcount = 1
+            playerlist = []
+            matchlist = []
+            for match in mlist:
+                player1 = self.pgetter.get_player_by_id(match[0])
+                player2 = self.pgetter.get_player_by_id(match[1])
+                result1 = match[2]
+                result2 = match[3]
+                matchlist.append(([player1, result1], [player2, result2]))
+                if matchcount <= 4:
+                    playerlist.append(player1)
+                    playerlist.append(player2)
+                if matchcount % 4 == 0:
+                    fstring = f"Round{roundcount}"
+                    theround = round.Round(fstring, matchlist)
+                    self.tournament.tournees.append(theround)
+                    roundcount += 1
+                    matchlist = []
+                matchcount += 1
+            self.tournament.players = playerlist
+            self.next_rounds()
