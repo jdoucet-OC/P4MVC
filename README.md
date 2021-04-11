@@ -24,8 +24,8 @@ linux / mac : `source env/bin/activate`
 `python main.py`  
 
 ## Flake-8 Report
-To generate a Flake8-html report, use :
-`flake8 --format=html --htmldir=flake-report`
+To generate a Flake8-html report, use :  
+`flake8 --format=html --htmldir=flake-report`  
 The setup.cfg file is set to 119 for the max line length.
 You can then open the .html files using any web browser of your choosing.  
 
