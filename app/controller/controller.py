@@ -192,7 +192,7 @@ class Controller:
         if index == 'm':
             self.edit_players()
         playerind = (players[int(index)-1])
-        new_elo = self.view.edit_elo(playerind)
+        new_elo = self.input.edit_elo(playerind)
         playerind.modify_elo(new_elo)
         self.edit_elo_players()
 
