@@ -54,7 +54,14 @@ class Controller:
         """
         self.tournament.players = self.pgetter.return_demo()
         self.tournament.players = self.tournament.sort_by_elo()
-        self.view.show_pname(self.tournament.players)
+        pcount = 1
+        for theplayer in self.tournament.players:
+            lname = theplayer.lastName
+            fname = theplayer.firstName
+            elo = theplayer.elo
+            self.view.show_pname(pcount, lname, fname, elo)
+            pcount += 1
+        self.view.start_first_round()
         self.first_round()
 
     def first_round(self):
@@ -65,7 +72,7 @@ class Controller:
         lowerhalf = self.tournament.players[:middle]
         upperhalf = self.tournament.players[middle:]
         tour1 = []
-        # création du premier bracket
+        # création du premier bracket ( matching des joueurs)
         for ii in range(0, middle):
             thematch = ([lowerhalf[ii], 0], [upperhalf[ii], 0])
             tour1.append(thematch)
@@ -76,7 +83,16 @@ class Controller:
         round1.insert_round(self.tournament, 0)
 
         # Préparation du match
-        self.view.show_elo_match(round1.matches)
+        for match in round1.matches:
+            player1 = match[0][0].lastName
+            player2 = match[1][0].lastName
+            elo1 = match[0][0].elo
+            elo2 = match[1][0].elo
+            score1 = match[0][1]
+            score2 = match[1][1]
+            self.view.show_elo_match(player1, player2, elo1,
+                                     elo2, score1, score2)
+        self.view.start_results()
         results = self.input.enter_results(round1.matches)
         self.process_results(results)
 
@@ -108,7 +124,16 @@ class Controller:
         nextround.insert_round(self.tournament, indexr)
 
         # Préparation du match
-        self.view.show_elo_match(nextround.matches)
+        for match in nextround.matches:
+            player1 = match[0][0].lastName
+            player2 = match[1][0].lastName
+            elo1 = match[0][0].elo
+            elo2 = match[1][0].elo
+            score1 = match[0][1]
+            score2 = match[1][1]
+            self.view.show_elo_match(player1, player2, elo1,
+                                     elo2, score1, score2)
+        self.view.start_results()
         results = self.input.enter_results(nextround.matches)
         self.process_results(results)
 
