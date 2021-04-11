@@ -4,7 +4,7 @@ from ..models import player
 
 class Controller:
     """"""
-    def __init__(self, view, pgetter, tgetter):
+    def __init__(self, view, inputs, pgetter, tgetter):
         """
         :param view: View object, allowing for controller
          to display views
@@ -14,21 +14,19 @@ class Controller:
         self.view = view
         self.pgetter = pgetter
         self.tgetter = tgetter
+        self.input = inputs
         self.tournament = None
 
     def run(self):
         """
         :return: main menu views
         """
-        choice = self.view.menu()
-        choice_list = ['a', 'b', 'c', 'd', 'x']
+
+        choice = self.input.choice_main_menu()
         funcs_list = [self.new_tt, self.resume_tt,
                       self.edit_players,
                       self.start_reports, quit]
-        for letter in choice_list:
-            if choice == letter:
-                index = choice_list.index(choice)
-                funcs_list[index]()
+        funcs_list[choice]()
 
     def new_tt(self):
         """
@@ -37,13 +35,14 @@ class Controller:
         """
         insert = None
         while insert is None:
-            name, place, date, timetype, desc = self.view.new_tournament()
+            name, place, date, timetype, desc =\
+                self.input.tournament_attr_inputs()
             self.tournament = tournaments.Tournament(name, place,
                                                      date, timetype, desc)
             insert = self.tournament.insert_tournament()
             if insert is None:
                 self.view.tournament_already_true()
-        players = self.view.add_players()
+        players = self.input.add_players()
         if players == "a":
             self.demo_players()
         if players == "b":
@@ -78,7 +77,7 @@ class Controller:
 
         # Préparation du match
         self.view.show_elo_match(round1.matches)
-        results = self.view.enter_results(round1.matches)
+        results = self.input.enter_results(round1.matches)
         self.process_results(results)
 
     def next_rounds(self):
@@ -110,7 +109,7 @@ class Controller:
 
         # Préparation du match
         self.view.show_elo_match(nextround.matches)
-        results = self.view.enter_results(nextround.matches)
+        results = self.input.enter_results(nextround.matches)
         self.process_results(results)
 
     def process_results(self, results):
@@ -159,7 +158,7 @@ class Controller:
         """
         :return: menu choice list
         """
-        choice = self.view.edit_players_menu()
+        choice = self.input.edit_players_menu()
         choice_list = ['a', 'b', 'm']
         func_list = [self.add_players,
                      self.edit_elo_players,
@@ -189,7 +188,7 @@ class Controller:
         :return: player elo edit, until "a" key press
         """
         players = self.pgetter.return_players()
-        index = self.view.show_players_edit(players)
+        index = self.input.show_players_edit(players)
         if index == 'm':
             self.edit_players()
         playerind = (players[int(index)-1])
