@@ -1,6 +1,3 @@
-from ..views import views
-
-
 class Input:
     """"""
     def __init__(self, view):
@@ -131,3 +128,20 @@ class Input:
         while choice not in choicelist:
             choice = input().lower()
         return choice
+
+    def edit_elo(self, player):
+        """
+        :param player: player to edit elo from
+        :return: input of new elo for player
+        """
+        lname = player.lastName
+        fname = player.firstName
+        elo = player.elo
+        new_elo = -1
+        self.inputview.edit_player_elo(fname, lname, elo)
+        while new_elo < 0 or new_elo > 3500:
+            try:
+                new_elo = int(input())
+            except ValueError:
+                self.inputview.expected_number()
+        return new_elo

@@ -97,3 +97,9 @@ class InputViews:
     @staticmethod
     def return_player_menu():
         print('[M] : Return to Player Edit Menu\n')
+
+    @staticmethod
+    def edit_player_elo(fname, lname, elo):
+        fstring = f"{fname} {lname} - Elo = {elo}" \
+                  f"\nChoose new elo (min : 0, max : 3500) : "
+        print(fstring)

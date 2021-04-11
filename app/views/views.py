@@ -92,25 +92,6 @@ class Views:
         print("Resuming previous tournament...")
 
     @staticmethod
-    def edit_elo(player):
-        """
-        :param player: player to edit elo from
-        :return: input of new elo for player
-        """
-        lname = player.lastName
-        fname = player.firstName
-        elo = player.elo
-        new_elo = -1
-        while new_elo < 0 or new_elo > 3500:
-            fstring = f"{fname} {lname} - Elo = {elo}" \
-                      f"\nChoose new elo : "
-            try:
-                new_elo = int(input(fstring))
-            except ValueError:
-                print('Expected a number\n')
-        return new_elo
-
-    @staticmethod
     def add_player_view():
         """
         :return: list of attributes to save new Player
