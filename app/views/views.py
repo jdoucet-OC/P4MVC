@@ -46,198 +46,83 @@ class Views:
         input("\nPress any key to enter results\n")
 
     @staticmethod
-    def show_results(matches):
+    def show_results(mcount, p1, p2, s1, s2):
         """
-        :param matches: matches just played, with results
-        :return: list of matches, with results
+        :param mcount: match index in the controller list
+        :param p1: player 1
+        :param p2: player 2
+        :param s1: score 1
+        :param s2: score2
+        :return: match results
         """
-        ii = 1
-        for match in matches:
-            player1 = match[0][0].lastName
-            player2 = match[1][0].lastName
-            score1 = match[0][1]
-            score2 = match[1][1]
-            fstring = f"Match {ii}\n{player1} [{score1}]:" \
-                      f"[{score2}] {player2}"
-            print(fstring)
-            ii += 1
+        fstring = f"Match {mcount}\n{p1} [{s1}]:" \
+                  f"[{s2}] {p2}"
+        print(fstring)
 
     @staticmethod
-    def scoreboard(sortedscorelist):
+    def start_scoreboard():
         """
-        :param sortedscorelist: list of matches, unformatted
-        :return: list of matches to be played, formatted
+        :return: scoreboard first view
         """
-        print("Here's the scoreboard :\n")
-        ranking = 1
-        for match in sortedscorelist:
-            playerln = match[0].lastName
-            playerfn = match[0].firstName
-            elo = match[0].elo
-            score = match[1]
-            fstring = f"{ranking} : [{score}] {playerfn} {playerln} - {elo}"
-            print(fstring)
-            ranking += 1
+        print("\nHere's the scoreboard")
+
+    @staticmethod
+    def scoreboard(ranking, ln, fn, elo, score):
+        """
+        :param ranking: tournament rank
+        :param ln: player first lame
+        :param fn: player first name
+        :param elo: player eloelo
+        :param score: score in the tournament
+        :return: tournament total scoreboard
+        """
+        fstring = f"{ranking} : [{score}] {ln} {fn} - {elo}"
+        print(fstring)
+
+    @staticmethod
+    def end_scoreboard():
+        """
+        :return: scoreboard last view
+        """
         input("\nPress any key to end tournament"
               " and return to main menu...\n")
 
     @staticmethod
     def go_next_round():
-        """"""
+        """
+        :return: waiting user input to go next round
+        """
         input("Press any key to start next Round...\n")
 
     @staticmethod
     def tournament_end_view():
-        """"""
+        """
+        :return: waiting user input to see scoreboard
+        """
         print("\nThis is the end!")
         input("Press any Key to go to view scoreboard...")
 
     @staticmethod
     def resume_tournament():
-        """"""
+        """
+        :return: view to resume a tournament
+        """
         print("Resuming previous tournament...")
 
     @staticmethod
-    def add_player_view():
+    def start_all_player_view():
         """
-        :return: list of attributes to save new Player
+        :return: start view all players
         """
-        print('Player addition menu : \n')
-        fname = input('First name : ')
-        lname = input('Last name : ')
-
-        print("Birth Date ( format : dd/mm/yyyy ) : ")
-        jdate = -2
-        while jdate > 31 or jdate <= 0:
-            try:
-                jdate = int(input("Day : "))
-            except ValueError:
-                print('Expected a number\n')
-        mdate = -2
-        while mdate > 12 or mdate <= 0:
-            try:
-                mdate = int(input("Month : "))
-            except ValueError:
-                print('Expected a number\n')
-        ydate = -2
-        while ydate > 2015 or ydate <= 1900:
-            try:
-                ydate = int(input("Year : "))
-            except ValueError:
-                print('Expected a number\n')
-        if mdate < 10:
-            mdate = f"0{mdate}"
-        if jdate < 10:
-            mdate = f"0{mdate}"
-        bdate = "/".join([str(jdate), str(mdate), str(ydate)])
-        genre = input('Genre : ')
-        elo = 3200
-        while elo > 3100 or elo <= 0:
-            try:
-                elo = int(input('Elo : '))
-            except ValueError:
-                print('Expected a number\n')
-        return fname, lname, bdate, genre, elo
-
-    @staticmethod
-    def continue_adding():
-        """
-        :return: input yes or no to continue adding players
-        or not
-        """
-        choice = None
-        choicelist = ['y', 'n']
-        while choice not in choicelist:
-            choice = input('Would like to add another player?'
-                           '\n[Y]es/[N]o\n').lower()
-        return choice
-
-    @staticmethod
-    def reports_menu():
-        """
-        :return: input of menu to go to
-        """
-        choicelist = ['a', 'b', 'c', 'd',
-                      'e', 'f', 'g', 'm']
-        choice = None
-        while choice not in choicelist:
-            choice = input(
-                'List all players :\n'
-                '  [A] : Alphabetical sort\n'
-                '  [B] : Elo sort\n\n'
-                'List all players in one tournament :\n'
-                '  [C] : Alphabetical sort\n'
-                '  [D] : Elo sort\n\n'
-                '[E] List all tournaments\n'
-                '[F] List all rounds in one tournament\n'
-                '[G] List all matches in one tournament\n'
-                '[M] Return to main menu\n'
-            ).lower()
-        return choice
-
-    @staticmethod
-    def all_player_view(all_players, mode):
-        """
-        :param all_players: list of players
-        :param mode: either alphabetical, or elo
-        :return: view of all players
-        """
-        ii = 1
-        mode_list = ["sorted alphebetically :",
-                     "sorted by Elo :"]
-        fstring = f"\n\nHere's the list of all players {mode_list[mode]} :\n"
+        fstring = f"\n\nHere's the list of all players:\n"
         print(fstring)
-        for player in all_players:
-            lname = player.lastName
-            fname = player.firstName
-            elo = player.elo
-            fstring = f"Player {ii} : {fname} {lname} - Elo = {elo}"
-            print(fstring)
-            ii += 1
-        input("\nPress any key to return to report menu..\n")
 
     @staticmethod
-    def tournament_choice_picker(tournaments):
+    def return_to_report_menu():
         """
-        :param tournaments: list of tournaments attributes
-        :return: input of chosen tournament id
+        :return: waits for input to return to main menu
         """
-        print("\n Pick one tournament :")
-        ii = 0
-        for tournament in tournaments:
-            name = tournament[0]
-            place = tournament[1]
-            date = tournament[2]
-            timetype = tournament[3]
-            fstring = f"[{ii}] : {place} {date} - {name} - {timetype}"
-            print(fstring)
-            ii += 1
-        strtourid = input()
-        inttourid = int(strtourid)
-        return inttourid
-
-    @staticmethod
-    def player_choice_picker(playerlist):
-        """
-        :param playerlist: list of players
-        :return: input of chosen player ID's ( 8 )
-        """
-        inputs = []
-        while len(inputs) < 8:
-            for player in playerlist:
-                try:
-                    lname = player.lastName
-                    fname = player.firstName
-                    elo = player.elo
-                    pid = player.get_player_id()
-                    fstring = f"[{pid}] : {fname} {lname} - Elo = {elo}"
-                    print(fstring)
-                except AttributeError:
-                    print(player)
-            picker = input()
-            inputs.append(int(picker))
-            playerlist[int(picker)] = f"[{int(picker)}] : Already Chosen"
-        return inputs
+        input("Press any key to return to report menu...")
 
     @staticmethod
     def list_all_tournaments(tournaments):

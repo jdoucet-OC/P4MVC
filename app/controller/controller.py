@@ -125,14 +125,13 @@ class Controller:
 
         # Préparation du match
         for match in nextround.matches:
-            player1 = match[0][0].lastName
-            player2 = match[1][0].lastName
+            p1 = match[0][0].lastName
+            p2 = match[1][0].lastName
             elo1 = match[0][0].elo
             elo2 = match[1][0].elo
-            score1 = match[0][1]
-            score2 = match[1][1]
-            self.view.show_elo_match(player1, player2, elo1,
-                                     elo2, score1, score2)
+            s1 = match[0][1]
+            s2 = match[1][1]
+            self.view.show_elo_match(p1, p2, s1, s2, elo1, elo2)
         self.view.start_results()
         results = self.input.enter_results(nextround.matches)
         self.process_results(results)
@@ -149,12 +148,22 @@ class Controller:
         theround.insert_matches(self.tournament, index)
         if self.tournament.turns == \
                 len(self.tournament.tournees):
-            self.view.show_results(theround.matches)
+            self.send_results(theround.matches)
             self.end_tournament()
         else:
-            self.view.show_results(theround.matches)
+            self.send_results(theround.matches)
             self.view.go_next_round()
             self.next_rounds()
+
+    def send_results(self, matches):
+        mcount = 1
+        for match in matches:
+            p1 = match[0][0].lastName
+            p2 = match[1][0].lastName
+            s1 = match[0][1]
+            s2 = match[1][1]
+            self.view.show_results(mcount, p1, p2, s1, s2)
+            mcount += 1
 
     def end_tournament(self):
         """
@@ -162,7 +171,16 @@ class Controller:
         """
         self.view.tournament_end_view()
         sortedscorelist = self.tournament.sort_by_score()
-        self.view.scoreboard(sortedscorelist)
+        ranking = 1
+        self.view.start_scoreboard()
+        for match in sortedscorelist:
+            ln = match[0].lastName
+            fn = match[0].firstName
+            elo = match[0].elo
+            score = match[1]
+            self.view.scoreboard(ranking, ln, fn, elo, score)
+            ranking += 1
+        self.view.end_scoreboard()
         self.run()
 
     def pick_players(self):
@@ -170,13 +188,20 @@ class Controller:
         :return: user picks 8 players ID, and plays first round
         """
         choicelist = self.pgetter.return_players()
-        pidlist = self.view.player_choice_picker(choicelist)
+        pidlist = self.input.player_choice_picker(choicelist)
         playerlist = []
         for pid in pidlist:
             playerlist.append(self.pgetter.get_player_by_id(pid))
         self.tournament.players = playerlist
         self.tournament.players = self.tournament.sort_by_elo()
-        self.view.show_pname(self.tournament.players)
+        pcount = 1
+        for theplayer in self.tournament.players:
+            lname = theplayer.lastName
+            fname = theplayer.firstName
+            elo = theplayer.elo
+            self.view.show_pname(pcount, lname, fname, elo)
+            pcount += 1
+        self.view.start_first_round()
         self.first_round()
 
     def edit_players(self):
@@ -184,25 +209,21 @@ class Controller:
         :return: menu choice list
         """
         choice = self.input.edit_players_menu()
-        choice_list = ['a', 'b', 'm']
+
         func_list = [self.add_players,
                      self.edit_elo_players,
                      self.run]
-
-        for letter in choice_list:
-            if choice == letter:
-                index = choice_list.index(choice)
-                func_list[index]()
+        func_list[choice]()
 
     def add_players(self):
         """
         :return: adding player according to input returned by
         the view
         """
-        fname, lname, bdate, genre, elo = self.view.add_player_view()
+        fname, lname, bdate, genre, elo = self.input.add_player_view()
         newplayer = player.Player(fname, lname, bdate, genre, elo)
         newplayer.insert_player()
-        choice = self.view.continue_adding()
+        choice = self.input.continue_adding()
         if choice == 'y':
             self.add_players()
         else:
@@ -225,8 +246,7 @@ class Controller:
         """
         :return: reports menu choice picker
         """
-        choice = self.view.reports_menu()
-        choice_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'm']
+        choice = self.input.reports_menu()
         choice_func = [
             self.all_player_alpha_sort,
             self.all_players_elo_sort,
@@ -237,10 +257,7 @@ class Controller:
             self.list_all_matches,
             self.run
         ]
-        for letter in choice_list:
-            if choice == letter:
-                index = choice_list.index(choice)
-                choice_func[index]()
+        choice_func[choice]()
 
     def all_player_alpha_sort(self):
         """
@@ -249,7 +266,15 @@ class Controller:
         """
         all_players = self.pgetter.return_players()
         all_players.sort(key=lambda x: x.lastName)
-        self.view.all_player_view(all_players, 0)
+        self.view.start_all_player_view()
+        pcount = 1
+        for theplayer in all_players:
+            lname = theplayer.lastName
+            fname = theplayer.firstName
+            elo = theplayer.elo
+            self.view.show_pname(pcount, lname, fname, elo)
+            pcount += 1
+        self.view.return_to_report_menu()
         self.start_reports()
 
     def all_players_elo_sort(self):
@@ -259,7 +284,15 @@ class Controller:
         """
         all_players = self.pgetter.return_players()
         all_players.sort(key=lambda x: x.elo, reverse=True)
-        self.view.all_player_view(all_players, 1)
+        self.view.start_all_player_view()
+        pcount = 1
+        for theplayer in all_players:
+            lname = theplayer.lastName
+            fname = theplayer.firstName
+            elo = theplayer.elo
+            self.view.show_pname(pcount, lname, fname, elo)
+            pcount += 1
+        self.view.return_to_report_menu()
         self.start_reports()
 
     def tournament_alpha_sort(self):
@@ -269,13 +302,22 @@ class Controller:
         """
         tidlist = self.tgetter.return_all_tournaments_id()
         tlist = self.tgetter.tourid_to_tour(tidlist)
-        tourid = self.view.tournament_choice_picker(tlist)
+        tourid = self.input.tournament_choice_picker(tlist)
+        if tourid == 'm':
+            self.run()
         pidlist = self.tgetter.return_player_tournament(tourid)
         playerlist = []
         for pid in pidlist:
             playerlist.append(self.pgetter.get_player_by_id(pid))
         playerlist.sort(key=lambda x: x.lastName)
-        self.view.all_player_view(playerlist, 0)
+        pcount = 1
+        for theplayer in playerlist:
+            lname = theplayer.lastName
+            fname = theplayer.firstName
+            elo = theplayer.elo
+            self.view.show_pname(pcount, lname, fname, elo)
+            pcount += 1
+        self.view.return_to_report_menu()
         self.start_reports()
 
     def tournament_elo_sort(self):
@@ -285,13 +327,22 @@ class Controller:
         """
         tidlist = self.tgetter.return_all_tournaments_id()
         tlist = self.tgetter.tourid_to_tour(tidlist)
-        tourid = self.view.tournament_choice_picker(tlist)
+        tourid = self.input.tournament_choice_picker(tlist)
+        if tourid == 'm':
+            self.run()
         pidlist = self.tgetter.return_player_tournament(tourid)
         playerlist = []
         for pid in pidlist:
             playerlist.append(self.pgetter.get_player_by_id(pid))
         playerlist.sort(key=lambda x: x.elo, reverse=True)
-        self.view.all_player_view(playerlist, 1)
+        pcount = 1
+        for theplayer in playerlist:
+            lname = theplayer.lastName
+            fname = theplayer.firstName
+            elo = theplayer.elo
+            self.view.show_pname(pcount, lname, fname, elo)
+            pcount += 1
+        self.view.return_to_report_menu()
         self.start_reports()
 
     def all_tournaments(self):
@@ -309,7 +360,9 @@ class Controller:
         """
         tidlist = self.tgetter.return_all_tournaments_id()
         tlist = self.tgetter.tourid_to_tour(tidlist)
-        tourid = self.view.tournament_choice_picker(tlist)
+        tourid = self.input.tournament_choice_picker(tlist)
+        if tourid == 'm':
+            self.run()
         rlist = self.tgetter.return_rounds(tourid)
         self.view.list_all_rounds(rlist)
         self.start_reports()
@@ -320,7 +373,9 @@ class Controller:
         """
         tidlist = self.tgetter.return_all_tournaments_id()
         tlist = self.tgetter.tourid_to_tour(tidlist)
-        tourid = self.view.tournament_choice_picker(tlist)
+        tourid = self.input.tournament_choice_picker(tlist)
+        if tourid == 'm':
+            self.run()
         mlist = self.tgetter.return_all_matches(tourid)
         for match in mlist:
             pid1toid = self.pgetter.get_player_by_id(match[0])
@@ -338,7 +393,9 @@ class Controller:
         # don't have 16 matches, and display it
         unfin = self.tgetter.return_unfinished_tourids()
         tlist = self.tgetter.tourid_to_tour(unfin)
-        choice = self.view.tournament_choice_picker(tlist)
+        choice = self.input.tournament_choice_picker(tlist)
+        if choice == 'm':
+            self.run()
         tourid = unfin[choice]
         name, place, date, timetype, desc = tlist[choice]
         self.tournament = tournaments.Tournament(name, place, date,
@@ -367,9 +424,11 @@ class Controller:
                 result1 = match[2]
                 result2 = match[3]
                 matchlist.append(([player1, result1], [player2, result2]))
+                # ajout des joueurs en prenant graces aux premiers matchs
                 if matchcount <= 4:
                     playerlist.append(player1)
                     playerlist.append(player2)
+                # un round = match count en modulo 4
                 if matchcount % 4 == 0:
                     fstring = f"Round{roundcount}"
                     theround = round.Round(fstring, matchlist)
