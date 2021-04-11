@@ -5,4 +5,4 @@ if __name__ == "__main__":
     try:
         app.run()
     except KeyboardInterrupt:
-        quit('Bye')
+        quit()
