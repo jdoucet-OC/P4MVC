@@ -23,8 +23,11 @@ linux / mac : `source env/bin/activate`
 5.Run the launcher using :  
 `python main.py`  
 
-## Generate a new Flake-8 Report
-this is where ill explain how to  
+## Flake-8 Report
+To generate a Flake8-html report, use :
+`flake8 --format=html --htmldir=flake-report`
+The setup.cfg file is set to 119 for the max line length.
+You can then open the .html files using any web browser of your choosing.  
 
 ## Example
 **Main Menu :**  
