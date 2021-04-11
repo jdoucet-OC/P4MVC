@@ -1,86 +1,8 @@
 class Views:
     """"""
-    def __init__(self):
-        """"""
-        pass
-
-    @staticmethod
-    def menu():
-        """
-        :return: input for choice menu
-        """
-        choicelist = ['a', 'b', 'c', 'd', 'x']
-        choice = None
-        while choice not in choicelist:
-            print('\nWelcome!\n'
-                  'Chess Tournament Menu :\n')
-            choice = input('[A] New Tournament\n'
-                           '[B] Resume Tournament\n'
-                           '[C] Players Management\n'
-                           '[D] Reports\n'
-                           '[X] Quit\n').lower()
-        return choice
-
-    @staticmethod
-    def new_tournament():
-        """
-        :return: inputs for tournament attributes
-        """
-        print("\n\nNew tournament, enter tournament attributes")
-        tname = input("Tournament name : ")
-        tplace = input("City : ")
-        print("Date ( format : dd/mm/yyyy ) -")
-
-        jdate = -2
-        while jdate > 31 or jdate <= 0:
-            try:
-                jdate = int(input("Day : "))
-            except ValueError:
-                print('Expected a number\n')
-        mdate = -2
-        while mdate > 12 or mdate <= 0:
-            try:
-                mdate = int(input("Month : "))
-            except ValueError:
-                print('Expected a number\n')
-        ydate = -2
-        while ydate > 2500 or ydate <= 0:
-            try:
-                ydate = int(input("Year : "))
-            except ValueError:
-                print('Expected a number\n')
-        if mdate < 10:
-            mdate = f"0{mdate}"
-        if jdate < 10:
-            mdate = f"0{mdate}"
-        tdate = "/".join([str(jdate), str(mdate), str(ydate)])
-
-        to_list = ['Bullet', 'Blitz', 'Coup Rapide']
-        choice_list = ['1', '2', '3']
-        choice = None
-        while choice not in choice_list:
-            choice = input("TimeType :\n[1] Bullet\n[2] Blitz\n"
-                           "[3] Coup Rapide\n")
-        timetype = to_list[int(choice)-1]
-        desc = input("Description : ")
-        return tname, tplace, tdate, timetype, desc
-
     @staticmethod
     def tournament_already_true():
         print('Tournament already exists\n')
-
-    @staticmethod
-    def add_players():
-        """
-        :return: input of player type for tournament
-        """
-        print("\n\nAdd players")
-        choicelist = ['a', 'b']
-        players = None
-        while players not in choicelist:
-            players = input("A: Add 8 Pre-selected Player ( demo )\n"
-                            "B: Pick 8 Players\n").lower()
-        return players
 
     @staticmethod
     def show_pname(players):
@@ -116,26 +38,6 @@ class Views:
                       f" [{score2}] {player2}({elo2})"
             print(fstring)
         input("\nPress any key to enter results...\n")
-
-    @staticmethod
-    def enter_results(matches):
-        """
-        :param matches: matches just played
-        :return: input of results to enter
-        """
-        results = []
-        choice = None
-        choicelist = ['a', 'b', 'c']
-        for match in matches:
-            while choice not in choicelist:
-                player1 = match[0][0].lastName
-                player2 = match[1][0].lastName
-                fstring = f"Winner : {player1} [A] or [B] {player2}" \
-                          f"\nDraw : [C]\n"
-                choice = input(fstring).lower()
-            results.append(choice)
-            choice = None
-        return results
 
     @staticmethod
     def show_results(matches):
@@ -175,65 +77,19 @@ class Views:
 
     @staticmethod
     def go_next_round():
-        """
-        :return: input to go next round
-        """
+        """"""
         input("Press any key to start next Round...\n")
 
     @staticmethod
     def tournament_end_view():
-        """
-        :return: input to return to main menu
-        """
+        """"""
         print("\nThis is the end!")
         input("Press any Key to go to view scoreboard...")
 
     @staticmethod
     def resume_tournament():
-        """
-        :return: resume tournament loading
-        """
+        """"""
         print("Resuming previous tournament...")
-
-    @staticmethod
-    def edit_players_menu():
-        """
-        :return: menu choice
-        """
-
-        choicelist = ['a', 'b', 'm']
-        choice = None
-        print('\n\nPlayer Management Menu:\n')
-
-        while choice not in choicelist:
-            choice = input('[A] Add new Player\n'
-                           '[B] Edit Player Elo\n'
-                           '[M] Return to Main Menu\n').lower()
-        return choice
-
-    @staticmethod
-    def show_players_edit(players):
-        """
-        :param players: players object
-        :return: list of players, to choose from
-        """
-        choicelist = ['m']
-        choice = None
-        for jj in range(0, len(players)+1):
-            choicelist.append(str(jj))
-        ii = 1
-        print("\n\nPick which player you want to edit :\n")
-        for player in players:
-            lname = player.lastName
-            fname = player.firstName
-            elo = player.elo
-            fstring = f"[{ii}] : {fname} {lname} - Elo = {elo}"
-            print(fstring)
-            ii += 1
-        print('[M] : Return to Player Edit Menu\n')
-        while choice not in choicelist:
-            choice = input().lower()
-        return choice
 
     @staticmethod
     def edit_elo(player):
