@@ -5,39 +5,45 @@ class Views:
         print('Tournament already exists\n')
 
     @staticmethod
-    def show_pname(players):
+    def show_pname(pcount, lname, fname, elo):
         """
-        :param players: player object
-        :return: list of player names
+        :param pcount: player number n in the list of players
+        :param lname: last name
+        :param fname: first name
+        :param elo: chess elo
+        :return: player description view
         """
-        ii = 1
-        print("\n\nToday's players are :\n")
-        for player in players:
-            lname = player.lastName
-            fname = player.firstName
-            elo = player.elo
-            fstring = f"Player {ii} : {fname} {lname} - Elo = {elo}"
-            print(fstring)
-            ii += 1
+        fstring = f"Player {pcount} : {fname} {lname} - Elo = {elo}"
+        print(fstring)
+
+    @staticmethod
+    def start_first_round():
+        """
+        :return: wait user input to start round
+        """
         input("\nPress any key to start first Round...\n")
 
     @staticmethod
-    def show_elo_match(matches):
+    def show_elo_match(p1, p2, s1, s2, elo1, elo2):
         """
-        :param matches: list of matches, unformatted
-        :return: list of matches to be played, formatted
+        :param p1: player 1 last name
+        :param p2: player 2 last name
+        :param s1: score player 1
+        :param s2: score player 2
+        :param elo1: elo player 1
+        :param elo2: elo player 2
+        :return: view of upcoming match
         """
-        for match in matches:
-            player1 = match[0][0].lastName
-            player2 = match[1][0].lastName
-            elo1 = match[0][0].elo
-            elo2 = match[1][0].elo
-            score1 = match[0][1]
-            score2 = match[1][1]
-            fstring = f"{player1}({elo1}) [{score1}] vs" \
-                      f" [{score2}] {player2}({elo2})"
-            print(fstring)
-        input("\nPress any key to enter results...\n")
+        fstring = f"{p1}({elo1}) [{s1}] vs" \
+                  f" [{s2}] {p2}({elo2})"
+        print(fstring)
+
+    @staticmethod
+    def start_results():
+        """
+        :return: waiting for input to enter results
+        """
+        input("\nPress any key to enter results\n")
 
     @staticmethod
     def show_results(matches):
