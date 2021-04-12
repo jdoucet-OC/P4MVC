@@ -15,53 +15,73 @@ class InputViews:
 
     @staticmethod
     def return_main_menu():
-        """"""
+        """
+        :return: use to return to main menu
+        """
         print('[M] : Return to Main Menu')
 
     @staticmethod
     def tour_name():
-        """"""
+        """
+        :return: use when asking for tournament name
+        """
         print("Tournament name :")
 
     @staticmethod
     def tour_place():
-        """"""
+        """
+        :return: use when asking for tournament place
+        """
         print("Tournament place :")
 
     @staticmethod
     def tour_date():
-        """"""
+        """
+        :return: use when asking for tournament date
+        """
         print("Tournament date : ")
 
     @staticmethod
     def day():
-        """"""
+        """
+        :return: use when asking for day
+        """
         print("Day :")
 
     @staticmethod
     def month():
-        """"""
+        """
+        :return: use when asking for month
+        """
         print("Month :")
 
     @staticmethod
     def year():
-        """"""
+        """
+        :return: use when asking for year
+        """
         print("Year :")
 
     @staticmethod
     def timetype_list():
-        """"""
+        """
+        :return: use when asking for tournament timetype
+        """
         print("Tournament TimeType :\n"
               "[1]Bullet - [2]Blitz - [3]Coup Rapide")
 
     @staticmethod
     def tour_description():
-        """"""
+        """
+        :return: use when asking for tournament description
+        """
         print("Tournament description :")
 
     @staticmethod
     def expected_number():
-        """"""
+        """
+        :return: use with value error, expected a int
+        """
         print("Expected a number")
 
     @staticmethod
@@ -134,32 +154,44 @@ class InputViews:
 
     @staticmethod
     def player_add_menu():
-        """"""
+        """
+        :return: use for player addition menu
+        """
         print('Player addition menu : \n')
 
     @staticmethod
     def player_first_name():
-        """"""
+        """
+        :return: use to ask for player first name
+        """
         print('First Name :')
 
     @staticmethod
     def player_last_name():
-        """"""
+        """
+        :return: use to ask for player last name
+        """
         print('Last name : ')
 
     @staticmethod
     def player_birthdate():
-        """"""
+        """
+        :return: use to ask for player birthdate
+        """
         print("Birth Date : ")
 
     @staticmethod
     def player_genre():
-        """"""
+        """
+        :return: use to ask for player genre
+        """
         print("Genre :")
 
     @staticmethod
     def player_elo():
-        """"""
+        """
+        :return: use to ask for player elo
+        """
         print("Elo :")
 
     @staticmethod
@@ -188,7 +220,9 @@ class InputViews:
 
     @staticmethod
     def tournament_choice():
-        """"""
+        """
+        :return: use when start the tournament picker
+        """
         print("\n Pick one tournament :")
 
     @staticmethod

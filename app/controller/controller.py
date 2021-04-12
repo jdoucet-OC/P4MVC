@@ -351,7 +351,14 @@ class Controller:
         """
         tidlist = self.tgetter.return_all_tournaments_id()
         tlist = self.tgetter.tourid_to_tour(tidlist)
-        self.view.list_all_tournaments(tlist)
+        self.view.start_all_tournament()
+        for tournament in tlist:
+            name = tournament[0]
+            place = tournament[1]
+            date = tournament[2]
+            timetype = tournament[3]
+            self.view.list_all_tournaments(place, date, name, timetype)
+        self.view.return_to_report_menu()
         self.start_reports()
 
     def list_all_rounds(self):
@@ -364,7 +371,10 @@ class Controller:
         if tourid == 'm':
             self.run()
         rlist = self.tgetter.return_rounds(tourid)
-        self.view.list_all_rounds(rlist)
+        self.view.start_all_rounds()
+        for rounds in rlist:
+            self.view.list_all_rounds(rounds[2])
+        self.view.return_to_report_menu()
         self.start_reports()
 
     def list_all_matches(self):
@@ -377,12 +387,29 @@ class Controller:
         if tourid == 'm':
             self.run()
         mlist = self.tgetter.return_all_matches(tourid)
+        # récupération des noms de joueurs par leur ID
         for match in mlist:
             pid1toid = self.pgetter.get_player_by_id(match[0])
             match[0] = pid1toid.firstName
             pid2toid = self.pgetter.get_player_by_id(match[1])
             match[1] = pid2toid.firstName
-        self.view.list_all_matches(mlist)
+        matchcount = 1
+        roundcount = 1
+        # chaque 4 match, display un round
+        for match in mlist:
+            player1 = match[0]
+            player2 = match[1]
+            result1 = match[2]
+            result2 = match[3]
+            self.view.list_all_matches(matchcount, player1, result1,
+                                       player2, result2,)
+            if matchcount % 4 == 0 and roundcount != 4:
+                matchcount = 1
+                roundcount += 1
+                self.view.all_matches_seperator(roundcount)
+            else:
+                matchcount += 1
+        self.view.return_to_report_menu()
         self.start_reports()
 
     def resume_tt(self):
