@@ -2,6 +2,9 @@ class Views:
     """"""
     @staticmethod
     def tournament_already_true():
+        """
+        :return: use when tournament already exists
+        """
         print('Tournament already exists\n')
 
     @staticmethod
@@ -114,8 +117,7 @@ class Views:
         """
         :return: start view all players
         """
-        fstring = f"\n\nHere's the list of all players:\n"
-        print(fstring)
+        print("\n\nHere's the list of all players:\n")
 
     @staticmethod
     def return_to_report_menu():
@@ -125,54 +127,60 @@ class Views:
         input("Press any key to return to report menu...")
 
     @staticmethod
-    def list_all_tournaments(tournaments):
+    def start_all_tournament():
         """
-        :param tournaments: all tournaments
-        :return: all tournaments, formatted
+        :return: use to start the list all tournaments
         """
         print("\nHere's the list of all tournaments :")
-        for tournament in tournaments:
-            name = tournament[0]
-            place = tournament[1]
-            date = tournament[2]
-            timetype = tournament[3]
-            fstring = f"{place} {date} - {name} - {timetype}"
-            print(fstring)
-        input("\nPress any key to return to report menu..\n")
 
     @staticmethod
-    def list_all_rounds(roundlist):
+    def start_all_rounds():
         """
-        :param roundlist: List of all rounds
-        :return: a view of all rounds from a tournament
+        :return: use to start the list all rounds
         """
-        for rounds in roundlist:
-            print(rounds)
-        input("\nPress any key to return to report menu..\n")
+        print("\nHere's the list of all the rounds :")
 
     @staticmethod
-    def list_all_matches(matchlist):
+    def list_all_tournaments(place, date, name, timetype):
         """
-        :param matchlist: list of all matches
-        :return: a view of all matches from a tournament
+        :param place: tournament place
+        :param date: tournament date
+        :param name: tournament name
+        :param timetype: tournament timetype
+        :return: tournament description list
         """
-        matchcount = 1
-        roundcount = 1
-        print('Round 1 : ')
-        for match in matchlist:
-            player1 = match[0]
-            player2 = match[1]
-            result1 = match[2]
-            result2 = match[3]
-            fstring = f"Match {matchcount} : {player1} [{result1}]" \
-                      f" - [{result2}] {player2}"
-            print(fstring)
-            if matchcount % 4 == 0 and roundcount != 4:
-                matchcount = 1
-                roundcount += 1
-                fstring2 = f"\nRound {roundcount} :"
-                print(fstring2)
-            else:
-                matchcount += 1
 
-        input("\nPress any key to return to report menu..\n")
+        fstring = f"{place} {date} - {name} - {timetype}"
+        print(fstring)
+
+    @staticmethod
+    def list_all_rounds(rounds):
+        """
+        :param rounds: a round name
+        :return: a round name
+        """
+        print(rounds)
+
+    @staticmethod
+    def list_all_matches(matchcount, player1, result1,
+                         player2, result2,):
+        """
+        :param matchcount: match index in match list
+        :param player1: player 1 firstname
+        :param result1: result from match player 1
+        :param player2: player 2 first name
+        :param result2: result from match player 2
+        :return: a view of a match
+        """
+        fstring = f"Match {matchcount} : {player1} [{result1}]" \
+                  f" - [{result2}] {player2}"
+        print(fstring)
+
+    @staticmethod
+    def all_matches_seperator(roundcount):
+        """
+        :param roundcount: round index in match list %4
+        :return: a round name
+        """
+        fstring2 = f"\nRound {roundcount} :"
+        print(fstring2)
